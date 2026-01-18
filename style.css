@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  font-family: Arial, helvetica, Sans-Serif;
+}
+
+#todo-container {
+  background-color: #a8a8a8;
+  width: 90vw;
+  max-width: 600px;
+  padding: 10px;
+  border-radius: 7px;
+}
+
+#todo-container > h1 {
+  text-align: center;
+  margin: 20px;
+}
+
+#input {
+  font-size: 1.1em;
+  width: 70vw;
+  max-width: 500px;
+  height: 1.7em;
+}
+
+#new-task {
+  font-size: 1.1em;
+  width: 1.7em;
+  height: 1.7em;
+}
