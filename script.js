@@ -56,8 +56,8 @@ function Edit(item) {
       return;
     }
     
-    for (let i = 0; i < todoList?.children.length; i++) {
-    if (todoList?.children[i] === item) {
+    for (let i = 0; i < todoList.children.length; i++) {
+    if (todoList.children[i] === item) {
       todos.splice(i, 1);
       todos.splice(i, 0, editing.value);
     }
@@ -77,8 +77,8 @@ function Edit(item) {
 }
 
 function Delete(item) {
-  for (let i = 0; i < todoList?.children.length; i++) {
-    if (todoList?.children[i] === item) {
+  for (let i = 0; i < todoList.children.length; i++) {
+    if (todoList.children[i] === item) {
       item.remove();
       todos.splice(i, 1);
     }
@@ -101,8 +101,17 @@ function handleClick(event) {
   } else if (event.target.classList.contains('button-finish')) {
     Finish(item);
   }
+  save();
+}
+
+function save() {
+  localStorage.setItem('todo-list', JSON.stringify(todos));
+  console.log(JSON.parse(localStorage.getItem('todo-list')));
 }
 
 todoList.addEventListener('click', handleClick);
 
-buttonAdd.addEventListener('click', addItem);
+buttonAdd.addEventListener('click', () => {
+  addItem();
+  save();
+});
