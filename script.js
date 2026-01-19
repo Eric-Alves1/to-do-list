@@ -15,11 +15,6 @@ function addItem() {
     return;
   }
   
- /* if (todos.length >= 5) {
-    alert('you can only write 5 todos!');
-    clearInput();
-    return;
-  }*/
   todos.push(value);
   
   const todoContainer = document.createElement('div');
@@ -32,17 +27,14 @@ function addItem() {
   const buttonEdit = document.createElement('button');
   buttonEdit.classList.add('button-edit')
   buttonEdit.textContent = 'edit';
- // buttonEdit.addEventListener('click', btnEdit);
-    
+
   const buttonDelete = document.createElement('button');
   buttonDelete.classList.add('button-delete')
   buttonDelete.textContent = 'delete';
- // buttonDelete.addEventListener('click', btnDelete);
-    
+
   const buttonFinish = document.createElement('button');
   buttonFinish.classList.add('button-finish');
   buttonFinish.textContent = 'finish';
- // buttonFinish.addEventListener('click', btnFinish);
     
   todoContainer.appendChild(todoItem)
   todoContainer.appendChild(buttonEdit)
@@ -63,6 +55,14 @@ function Edit(item) {
       alert('you must write something!')
       return;
     }
+    
+    for (let i = 0; i < todoList?.children.length; i++) {
+    if (todoList?.children[i] === item) {
+      todos.splice(i, 1);
+      todos.splice(i, 0, editing.value);
+    }
+    }
+    
     todoTitle.textContent = editing.value;
     editing.remove();
     todoTitle.style.display = 'block';
@@ -77,8 +77,12 @@ function Edit(item) {
 }
 
 function Delete(item) {
-  item.remove();
-  todos.pop();
+  for (let i = 0; i < todoList?.children.length; i++) {
+    if (todoList?.children[i] === item) {
+      item.remove();
+      todos.splice(i, 1);
+    }
+  }
 }
 
 function Finish(item) {
