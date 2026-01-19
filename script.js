@@ -1,21 +1,15 @@
 const input = document.querySelector('#input');
 const buttonAdd = document.querySelector('#new-task');
 const todoList = document.querySelector('#todo-list');
-const todos = [];
+const todo_item_values = [];
 
 function clearInput() {
   input.value = "";
   input.focus();
 }
 
-function addItem() {
-  let value = input.value;
-  if (value === "") {
-    alert('you must write something!')
-    return;
-  }
-  
-  todos.push(value);
+function addItem(value) {
+  todo_item_values.push(value);
   
   const todoContainer = document.createElement('div');
   todoContainer.classList.add('todo-item')
@@ -58,8 +52,8 @@ function Edit(item) {
     
     for (let i = 0; i < todoList.children.length; i++) {
     if (todoList.children[i] === item) {
-      todos.splice(i, 1);
-      todos.splice(i, 0, editing.value);
+      todo_item_values.splice(i, 1);
+      todo_item_values.splice(i, 0, editing.value);
     }
     }
     
@@ -80,7 +74,7 @@ function Delete(item) {
   for (let i = 0; i < todoList.children.length; i++) {
     if (todoList.children[i] === item) {
       item.remove();
-      todos.splice(i, 1);
+      todo_item_values.splice(i, 1);
     }
   }
 }
@@ -105,13 +99,29 @@ function handleClick(event) {
 }
 
 function save() {
-  localStorage.setItem('todo-list', JSON.stringify(todos));
-  console.log(JSON.parse(localStorage.getItem('todo-list')));
+  localStorage.setItem('todo-list', JSON.stringify(todo_item_values));
+ JSON.parse(localStorage.getItem('todo-list'));
+}
+
+function load() {
+  const stored_values = JSON.parse(localStorage.getItem('todo-list'));
+  for (let i = 0; i < stored_values.length; i++) {
+    input.value = stored_values[i];
+    addItem(value);
+  }
 }
 
 todoList.addEventListener('click', handleClick);
 
 buttonAdd.addEventListener('click', () => {
-  addItem();
+  let value = input.value;
+  if (value === "") {
+    alert('you must write something!')
+    return;
+  }
+  
+  addItem(value);
   save();
 });
+
+load();
