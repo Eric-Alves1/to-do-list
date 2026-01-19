@@ -74,7 +74,7 @@ function Edit(item) {
 
 function Delete(item) {
   item.remove();
-  todos.pop(item);
+  todos.pop();
 }
 
 function Finish(item) {
