@@ -15,11 +15,11 @@ function addItem() {
     return;
   }
   
-  if (todos.length >= 5) {
+ /* if (todos.length >= 5) {
     alert('you can only write 5 todos!');
     clearInput();
     return;
-  }
+  }*/
   todos.push(value);
   
   const todoContainer = document.createElement('div');
@@ -59,6 +59,10 @@ function Edit(item) {
   const editing = item.querySelector('input');
   
   if (editing) {
+    if (editing.value === "") {
+      alert('you must write something!')
+      return;
+    }
     todoTitle.textContent = editing.value;
     editing.remove();
     todoTitle.style.display = 'block';
@@ -81,7 +85,7 @@ function Finish(item) {
   item.classList.toggle('finished');
 }
 
-function selectedButton(event) {
+function handleClick(event) {
   const item = event.target.closest('.todo-item');
   
   if (!item) return;
@@ -95,6 +99,6 @@ function selectedButton(event) {
   }
 }
 
-todoList.addEventListener('click', selectedButton);
+todoList.addEventListener('click', handleClick);
 
 buttonAdd.addEventListener('click', addItem);
