@@ -23,26 +23,26 @@ function addItem() {
   todos.push(value);
   
   const todoContainer = document.createElement('div');
-  todoContainer.classList.add('todo')
+  todoContainer.classList.add('todo-item')
   
   const todoItem = document.createElement('h3');
-  todoItem.classList.add('todo-item');
+  todoItem.classList.add('todo-title');
   todoItem.textContent = value;
     
   const buttonEdit = document.createElement('button');
   buttonEdit.classList.add('button-edit')
   buttonEdit.textContent = 'edit';
-  buttonEdit.addEventListener('click', btnEdit);
+ // buttonEdit.addEventListener('click', btnEdit);
     
   const buttonDelete = document.createElement('button');
   buttonDelete.classList.add('button-delete')
   buttonDelete.textContent = 'delete';
-  buttonDelete.addEventListener('click', btnDelete);
+ // buttonDelete.addEventListener('click', btnDelete);
     
   const buttonFinish = document.createElement('button');
   buttonFinish.classList.add('button-finish');
   buttonFinish.textContent = 'finish';
-  buttonFinish.addEventListener('click', btnFinish);
+ // buttonFinish.addEventListener('click', btnFinish);
     
   todoContainer.appendChild(todoItem)
   todoContainer.appendChild(buttonEdit)
@@ -54,16 +54,47 @@ function addItem() {
   clearInput();
 }
 
-function btnEdit() {
-  alert('its working');
+function Edit(item) {
+  const todoTitle = item.querySelector('h3');
+  const editing = item.querySelector('input');
+  
+  if (editing) {
+    todoTitle.textContent = editing.value;
+    editing.remove();
+    todoTitle.style.display = 'block';
+    return;
+  }
+  
+  const editInput = document.createElement('input');
+  editInput.value = todoTitle.textContent;
+  todoTitle.style.display = 'none';
+  item.insertBefore(editInput, todoTitle);
+  editInput.focus();
 }
 
-function btnDelete() {
-  alert('its working');
+function Delete(item) {
+  item.remove();
+  todos.pop(item);
 }
 
-function btnFinish() {
-  alert('its working');
+function Finish(item) {
+  item.classList.toggle('finished');
 }
+
+function selectedButton(event) {
+  const item = event.target.closest('.todo-item');
+  
+  if (!item) return;
+  
+  if (event.target.classList.contains('button-edit')) {
+    Edit(item);
+  } else if (event.target.classList.contains('button-delete')) {
+    Delete(item);
+  } else if (event.target.classList.contains('button-finish')) {
+    Finish(item);
+  }
+}
+
+todoList.addEventListener('click', selectedButton);
 
 buttonAdd.addEventListener('click', addItem);
