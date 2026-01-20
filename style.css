@@ -9,6 +9,7 @@
 
 * {
   box-sizing: border-box;
+  
 }
 
 html,
@@ -34,4 +35,38 @@ body {
   width: 100%;
   padding: 10px;
   overflow: auto;
+}
+
+#header {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+#input {
+  padding: 5px;
+  width: 85%;
+  font-size: 1.1em;
+}
+
+#new-task {
+  padding: 5px;
+  width: 12%;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+#todo-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-item {
+  padding: 7px;
+  margin: 10px 0 10px 0;
+}
+
+h3 {
+  display: inline;
+  padding: 7px;
+  margin-right: 7px;
 }

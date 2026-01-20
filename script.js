@@ -1,3 +1,4 @@
+//<span class="material-symbols-outlined">delete</span>
 const input = document.querySelector('#input');
 const buttonAdd = document.querySelector('#new-task');
 const todoList = document.querySelector('#todo-list');
@@ -45,7 +46,7 @@ function Edit(item) {
   const editing = item.querySelector('input');
 
   if (editing) {
-    if (editing.value === '') {
+    if (editing.value.trim() === '') {
       alert('you must write something!');
       return;
     }

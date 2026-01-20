@@ -9,15 +9,18 @@ The application allows users to add tasks dynamically while applying basic valid
 ## Features
 - Add tasks dynamically to the list  
 - Prevent adding empty tasks  
-- Limit the number of tasks to 5  
 - Clear and refocus the input after adding a task  
 - Finish, delete and edit tasks
+- Store todos items in localStorage
 
 ## What I Practiced
 - Creating and manipulating DOM elements
 - Handling events with event listeners  
 - Applying conditional logic for validation  
 - Structuring JavaScript code in a clean and readable way  
+- localStorage
+- Good practice with names
+- How to trace the code and think about the flow
 
 ## Technologies Used
 - HTML5  
