@@ -15,21 +15,24 @@ function addItem(value) {
   const todoContainer = document.createElement('div');
   todoContainer.classList.add('todo-item');
 
+
   const todoItem = document.createElement('h3');
   todoItem.classList.add('todo-title');
   todoItem.textContent = value;
 
+
   const buttonEdit = document.createElement('button');
   buttonEdit.classList.add('button-edit');
-  buttonEdit.textContent = 'edit';
+  buttonEdit.textContent = 'Edit';
 
   const buttonDelete = document.createElement('button');
   buttonDelete.classList.add('button-delete');
-  buttonDelete.textContent = 'delete';
+  buttonDelete.textContent = 'Delete';
+
 
   const buttonFinish = document.createElement('button');
   buttonFinish.classList.add('button-finish');
-  buttonFinish.textContent = 'finish';
+  buttonFinish.textContent = 'Finish';
 
   todoContainer.appendChild(todoItem);
   todoContainer.appendChild(buttonEdit);
@@ -66,6 +69,7 @@ function Edit(item) {
   }
 
   const editInput = document.createElement('input');
+  editInput.classList.add('input-edit');
   editInput.value = todoTitle.textContent;
   todoTitle.style.display = 'none';
   item.insertBefore(editInput, todoTitle);
