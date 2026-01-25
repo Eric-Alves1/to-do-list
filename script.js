@@ -1,24 +1,26 @@
-//<span class="material-symbols-outlined">delete</span>
 const input = document.querySelector('#input');
 const buttonAdd = document.querySelector('#new-task');
 const todoList = document.querySelector('#todo-list');
-const todo_item_values = [];
 
 function clearInput() {
   input.value = '';
   input.focus();
 }
 
-function addItem(value) {
-  todo_item_values.push(value);
+const myMap = new Map();
+let id = 0;
 
+function addItem(value) {
+  id++;
+  myMap.set(id.toString(), value);
+  
   const todoContainer = document.createElement('div');
   todoContainer.classList.add('todo-item');
+  todoContainer.setAttribute('id', id);
 
-
-  const todoItem = document.createElement('h3');
-  todoItem.classList.add('todo-title');
-  todoItem.textContent = value;
+  const todoTitle = document.createElement('h3');
+  todoTitle.classList.add('todo-title');
+  todoTitle.textContent = value;
 
 
   const buttonEdit = document.createElement('button');
@@ -34,7 +36,7 @@ function addItem(value) {
   buttonFinish.classList.add('button-finish');
   buttonFinish.textContent = 'Finish';
 
-  todoContainer.appendChild(todoItem);
+  todoContainer.appendChild(todoTitle);
   todoContainer.appendChild(buttonEdit);
   todoContainer.appendChild(buttonDelete);
   todoContainer.appendChild(buttonFinish);
@@ -53,15 +55,14 @@ function Edit(item) {
       alert('you must write something!');
       return;
     }
-
-    for (let i = 0; i < todoList.children.length; i++) {
-      if (todoList.children[i] === item) {
-        todo_item_values.splice(i, 1);
-        todo_item_values.splice(i, 0, editing.value);
-        break;
-      }
+    const itemId = item.getAttribute('id');
+    const itemValue = editing.value;
+    if (itemId) {
+      myMap.set(itemId, itemValue);
+      todoTitle.textContent = itemValue;
+      todoTitle.style.display = 'block';
+      editing.remove();
     }
-
     todoTitle.textContent = editing.value;
     editing.remove();
     todoTitle.style.display = 'block';
@@ -77,13 +78,11 @@ function Edit(item) {
 }
 
 function Delete(item) {
-  for (let i = 0; i < todoList.children.length; i++) {
-    if (todoList.children[i] === item) {
-      item.remove();
-      todo_item_values.splice(i, 1);
-      break;
-    }
+  const itemId = item.getAttribute('id');
+  if (itemId) {
+    myMap.delete(itemId);
   }
+  item.remove();
 }
 
 function Finish(item) {
@@ -112,7 +111,7 @@ function load() {
 }
 
 function save() {
-  localStorage.setItem('todo-list', JSON.stringify(todo_item_values));
+  localStorage.setItem('todo-list', JSON.stringify());
 }
 
 todoList.addEventListener('click', handleClick);
