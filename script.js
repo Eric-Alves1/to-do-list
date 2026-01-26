@@ -104,14 +104,18 @@ function handleClick(event) {
   save();
 }
 
+function getValues() {
+  return Array.from(myMap.values());
+}
+
 function load() {
-  for (const stored_value of JSON.parse(localStorage.getItem('todo-list'))) {
+  for (const stored_value of JSON.parse(localStorage.getItem('todo-list') ?? '[]')) {
     addItem(stored_value);
   }
 }
 
 function save() {
-  localStorage.setItem('todo-list', JSON.stringify());
+  localStorage.setItem('todo-list', JSON.stringify(getValues()));
 }
 
 todoList.addEventListener('click', handleClick);
