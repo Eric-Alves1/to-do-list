@@ -1,5 +1,6 @@
 const input = document.querySelector('#input');
 const buttonAdd = document.querySelector('#new-task');
+const number_of_items = document.querySelector('#numItems')
 const todoList = document.querySelector('#todo-list');
 
 function clearInput() {
@@ -13,6 +14,7 @@ let id = 0;
 function addItem(value) {
   id++;
   myMap.set(id.toString(), value);
+  number_of_items.textContent = `${myMap.size} items.`;
   
   const todoContainer = document.createElement('div');
   todoContainer.classList.add('todo-item');
