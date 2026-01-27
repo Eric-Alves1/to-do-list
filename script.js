@@ -85,6 +85,7 @@ function Delete(item) {
     myMap.delete(itemId);
   }
   item.remove();
+  number_of_items.textContent = `${myMap.size} items.`;
 }
 
 function Finish(item) {
