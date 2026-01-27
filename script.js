@@ -27,7 +27,7 @@ function addItem(value, importance) {
     selected_priority = "";
   }
   
-  myMap.set(id.toString(), value, priority);
+  myMap.set(id.toString(), value, selected_priority);
   number_of_items.textContent = `${myMap.size} items.`;
   
   const todoContainer = document.createElement('div');
