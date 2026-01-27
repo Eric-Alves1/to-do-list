@@ -45,6 +45,12 @@ body {
   max-width: 500px;
 }
 
+#line {
+  width: 90%;
+  color: #4c4c4c;
+  font-weight: 3px;
+}
+
 #input {
   padding: 5px;
   width: 85%;
