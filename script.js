@@ -28,6 +28,7 @@ function addItem(value, importance) {
   }
   
   myMap.set(id.toString(), value, selected_priority);
+  select.value = "";
   number_of_items.textContent = `${myMap.size} items.`;
   
   const todoContainer = document.createElement('div');
