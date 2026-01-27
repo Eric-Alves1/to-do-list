@@ -55,7 +55,7 @@ function addItem(value, priority, categorie) {
 
   const todoTitle = document.createElement('h3');
   todoTitle.classList.add('todo-title');
-  todoTitle.textContent = value;
+  todoTitle.textContent = `Task: ${value}`;
   
   const todoPriority = document.createElement('h3');
   todoPriority.classList.add('todo-priority');
