@@ -44,8 +44,8 @@ function addItem(value, priority, categorie) {
   
   myMap.set(id.toString(), {
     text: value,
-    selectedPriority = priority,
-    selectedCategorie = categorie
+    selectedPriority: priority,
+    selectedCategorie: categorie
   });
   selectPriorities.value = "";
   selectCategories.value = "";
@@ -61,11 +61,11 @@ function addItem(value, priority, categorie) {
   
   const todoPriority = document.createElement('h3');
   todoPriority.classList.add('todo-priority');
-  todoPriority.textContent = priority;
+  todoPriority.textContent = selected_priority;
   
   const todoCategorie = document.createElement('h3');
   todoCategorie.classList.add('todo-categorie');
-  todoCategorie.textContent = categorie;
+  todoCategorie.textContent = selected_categorie;
 
 
   const buttonEdit = document.createElement('button');
