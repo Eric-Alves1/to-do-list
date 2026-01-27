@@ -17,26 +17,26 @@ function addItem(value, priority, categorie) {
   id++;
   
   let selected_priority;
-  if (priority === 'veryImportant') {
+  if (priority === 'Very-Important') {
     selected_priority = " Priority: Very important";
   } else if (priority === 'important') {
     selected_priority = " Priority: Important";
-  } else if (priority === 'lessImportant') {
+  } else if (priority === 'Less-Important') {
     selected_priority = " Priority: Less important";
   } else {
     selected_priority = "";
   }
   
   let selected_categorie;
-  if (categorie === 'personal') {
+  if (categorie === 'Personal') {
     selected_categorie = " Categorie: Personal";
-  } else if (categorie === 'work') {
+  } else if (categorie === 'Work') {
     selected_categorie = " Categorie: Work";
-  } else if (categorie === 'study') {
+  } else if (categorie === 'Study') {
     selected_categorie = " Categorie: Study";
-  } else if (categorie === 'health') {
+  } else if (categorie === 'Health') {
     selected_categorie = " Categorie: Health";
-  } else if (categorie === 'others') {
+  } else if (categorie === 'Others') {
     selected_categorie = " Categorie: Others";
   } else {
     selected_categorie = "";
@@ -94,34 +94,65 @@ function addItem(value, priority, categorie) {
 }
 
 function Edit(item) {
+  const editInput = document.createElement('input');
+  const editPriority = selectPriorities.cloneNode(true);
+  const editCategorie = selectCategories.cloneNode(true);
+  
+  editInput.classList.add('edit-input');
+  editPriority.classList.add('edit-priority');
+  editCategorie.classList.add('edit-categorie');
+  
+  const editing = item.querySelector('.edit-input');
+  const editingPriority = item.querySelector('.edit-priority');
+  const editingCategorie = item.querySelector('.edit-categorie');
+  
   const todoTitle = item.querySelector('h3');
-  const editing = item.querySelector('input');
+  const todoPriority = item.querySelector('.todo-priority');
+  const todoCategorie = item.querySelector('.todo-categorie');
+  
+  todoTitle.style.display = 'none';
+  todoPriority.style.display = 'none';
+  todoCategorie.style.display = 'none';
 
   if (editing) {
-    if (editing.value.trim() === '') {
-      alert('you must write something!');
+    if (editing.value.trim() === '' || editingPriority.value === '' || editingCategorie.value === '') {
+      alert('you must change something!');
       return;
     }
+    
     const itemId = item.getAttribute('id');
     const itemValue = editing.value;
+    const priorityValue = editingPriority.value;
+    const categorieValue = editingCategorie.value;
+    
     if (itemId) {
-      myMap.set(itemId, itemValue);
+      myMap.set(itemId, {
+        text: itemValue,
+        selectedPriority: priorityValue,
+        selectedCategorie: categorieValue
+      });
       todoTitle.textContent = itemValue;
-      todoTitle.style.display = 'block';
+      todoPriority.textContent = `Priority: ${priorityValue}`;
+      todoCategorie.textContent = `Categorie: ${categorieValue}`;
+      
+      editing.style.display = 'block';
+      editingPriority.style.display = 'block';
+      editingCategorie.style.display = 'block';
+      
       editing.remove();
+      editingPriority.remove();
+      editingCategorie.remove();
+      return;
     }
-    todoTitle.textContent = editing.value;
-    editing.remove();
-    todoTitle.style.display = 'block';
-    return;
   }
 
-  const editInput = document.createElement('input');
-  editInput.classList.add('input-edit');
   editInput.value = todoTitle.textContent;
-  todoTitle.style.display = 'none';
-  item.insertBefore(editInput, todoTitle);
   editInput.focus();
+  
+  item.prepend(editInput);
+  item.prepend(editPriority);
+  item.prepend(editCategorie);
+  item.prepend(todoTitle);
 }
 
 function Delete(item) {
@@ -157,8 +188,8 @@ function getValues() {
 }
 
 function load() {
-  for (const stored_value of JSON.parse(localStorage.getItem('todo-list') ?? '[]')) {
-    addItem(stored_value);
+  for (const stored_values of JSON.parse(localStorage.getItem('todo-list') ?? '[]')) {
+    addItem(stored_values.text, stored_values.selectedPriority, stored_values.selectedCategorie);
   }
 }
 
