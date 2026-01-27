@@ -1,6 +1,7 @@
 const input = document.querySelector('#input');
 const buttonAdd = document.querySelector('#new-task');
-const number_of_items = document.querySelector('#numItems')
+const number_of_items = document.querySelector('#numItems');
+const select = document.querySelector('#priority')
 const todoList = document.querySelector('#todo-list');
 
 function clearInput() {
@@ -11,9 +12,22 @@ function clearInput() {
 const myMap = new Map();
 let id = 0;
 
-function addItem(value) {
+function addItem(value, importance) {
   id++;
-  myMap.set(id.toString(), value);
+  
+  const priority = select.value;
+  let selected_priority;
+  if (priority === 'veryImportant') {
+    selected_priority = " (Very important)";
+  } else if (priority === 'important') {
+    selected_priority = " (Important)";
+  } else if (priority === 'lessImportant') {
+    selected_priority = " (Less important)";
+  } else {
+    selected_priority = "";
+  }
+  
+  myMap.set(id.toString(), value, priority);
   number_of_items.textContent = `${myMap.size} items.`;
   
   const todoContainer = document.createElement('div');
@@ -22,7 +36,7 @@ function addItem(value) {
 
   const todoTitle = document.createElement('h3');
   todoTitle.classList.add('todo-title');
-  todoTitle.textContent = value;
+  todoTitle.textContent = value + selected_priority;
 
 
   const buttonEdit = document.createElement('button');
@@ -124,9 +138,15 @@ function save() {
 todoList.addEventListener('click', handleClick);
 
 buttonAdd.addEventListener('click', () => {
-  let value = input.value;
+  const value = input.value;
+  const priority = select.value;
   if (value.trim() === '') {
     alert('you must write something!');
+    return;
+  }
+  
+  if (priority === "") {
+    alert('you must choose a priority!');
     return;
   }
   addItem(value);
