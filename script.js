@@ -18,11 +18,11 @@ function addItem(value, priority, categorie) {
   
   let selected_priority;
   if (priority === 'Very-Important') {
-    selected_priority = " Priority: Very important";
+    selected_priority = " Priority: Very-Important";
   } else if (priority === 'important') {
     selected_priority = " Priority: Important";
   } else if (priority === 'Less-Important') {
-    selected_priority = " Priority: Less important";
+    selected_priority = " Priority: Less-Important";
   } else {
     selected_priority = "";
   }
@@ -94,65 +94,63 @@ function addItem(value, priority, categorie) {
 }
 
 function Edit(item) {
-  const editInput = document.createElement('input');
-  const editPriority = selectPriorities.cloneNode(true);
-  const editCategorie = selectCategories.cloneNode(true);
-  
-  editInput.classList.add('edit-input');
-  editPriority.classList.add('edit-priority');
-  editCategorie.classList.add('edit-categorie');
-  
-  const editing = item.querySelector('.edit-input');
-  const editingPriority = item.querySelector('.edit-priority');
-  const editingCategorie = item.querySelector('.edit-categorie');
+  let editing = item.querySelector('.edit-input');
+  let editingPriority = item.querySelector('.edit-priority');
+  let editingCategorie = item.querySelector('.edit-categorie');
   
   const todoTitle = item.querySelector('h3');
   const todoPriority = item.querySelector('.todo-priority');
   const todoCategorie = item.querySelector('.todo-categorie');
-  
-  todoTitle.style.display = 'none';
-  todoPriority.style.display = 'none';
-  todoCategorie.style.display = 'none';
+
+  const itemId = item.getAttribute('id');
+  const data = myMap.get(itemId);
 
   if (editing) {
     if (editing.value.trim() === '' || editingPriority.value === '' || editingCategorie.value === '') {
       alert('you must change something!');
       return;
     }
-    
-    const itemId = item.getAttribute('id');
-    const itemValue = editing.value;
-    const priorityValue = editingPriority.value;
-    const categorieValue = editingCategorie.value;
-    
-    if (itemId) {
+
       myMap.set(itemId, {
-        text: itemValue,
-        selectedPriority: priorityValue,
-        selectedCategorie: categorieValue
+        text: editing.value,
+        selectedPriority: editingPriority.value,
+        selectedCategorie: editingCategorie.value
       });
-      todoTitle.textContent = itemValue;
-      todoPriority.textContent = `Priority: ${priorityValue}`;
-      todoCategorie.textContent = `Categorie: ${categorieValue}`;
       
-      editing.style.display = 'block';
-      editingPriority.style.display = 'block';
-      editingCategorie.style.display = 'block';
+      todoTitle.textContent = editing.value;
+      todoPriority.textContent = `Priority: ${editingPriority.value}`;
+      todoCategorie.textContent = `Categorie: ${editingCategorie.value}`;
+      
+      todoTitle.style.display = 'block';
+      todoPriority.style.display = 'block';
+      todoCategorie.style.display = 'block';
       
       editing.remove();
       editingPriority.remove();
       editingCategorie.remove();
       return;
     }
-  }
+    
+  const editInput = document.createElement('input');
+  const editPriority = selectPriorities.cloneNode(true);
+  const editCategorie = selectCategories.cloneNode(true);
 
-  editInput.value = todoTitle.textContent;
-  editInput.focus();
+  editInput.classList.add('edit-input');
+  editPriority.classList.add('edit-priority');
+  editCategorie.classList.add('edit-categorie');
+
+  editInput.value = data.text;
+  editPriority.value = data.selectedPriority;
+  editCategorie.value = data.selectedCategorie;
+  
+  todoTitle.style.display = 'none';
+  todoPriority.style.display = 'none';
+  todoCategorie.style.display = 'none';
   
   item.prepend(editInput);
   item.prepend(editPriority);
   item.prepend(editCategorie);
-  item.prepend(todoTitle);
+  editInput.focus();
 }
 
 function Delete(item) {
