@@ -47,8 +47,6 @@ function addItem(value, priority, categorie) {
     selectedPriority: priority,
     selectedCategorie: categorie
   });
-  selectPriorities.value = "";
-  selectCategories.value = "";
   number_of_items.textContent = `${myMap.size} items.`;
   
   const todoContainer = document.createElement('div');
