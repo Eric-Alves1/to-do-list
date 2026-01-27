@@ -1,7 +1,8 @@
 const input = document.querySelector('#input');
 const buttonAdd = document.querySelector('#new-task');
 const number_of_items = document.querySelector('#numItems');
-const select = document.querySelector('#priority')
+const selectPriorities = document.querySelector('#priority');
+const selectCategories = document.querySelector('#categorie');
 const todoList = document.querySelector('#todo-list');
 
 function clearInput() {
@@ -12,23 +13,40 @@ function clearInput() {
 const myMap = new Map();
 let id = 0;
 
-function addItem(value, importance) {
+function addItem(value) {
   id++;
   
-  const priority = select.value;
+  const priority = selectPriorities.value;
   let selected_priority;
   if (priority === 'veryImportant') {
-    selected_priority = " (Very important)";
+    selected_priority = " Priority: Very important";
   } else if (priority === 'important') {
-    selected_priority = " (Important)";
+    selected_priority = " Priority: Important";
   } else if (priority === 'lessImportant') {
-    selected_priority = " (Less important)";
+    selected_priority = " Priority: Less important";
   } else {
     selected_priority = "";
   }
   
+  const categorie = selectCategories.value;
+  let selected_categorie;
+  if (categorie === 'personal') {
+    selected_categorie = " Categorie: Personal";
+  } else if (categorie === 'work') {
+    selected_categorie = " Categorie: Work";
+  } else if (categorie === 'study') {
+    selected_categorie = " Categorie: Study";
+  } else if (categorie === 'health') {
+    selected_categorie = " Categorie: Health";
+  } else if (categorie === 'others') {
+    selected_categorie = " Categorie: Others";
+  } else {
+    selected_categorie = "";
+  }
+  
   myMap.set(id.toString(), value);
-  select.value = "";
+  selectPriorities.value = "";
+  selectCategories.value = "";
   number_of_items.textContent = `${myMap.size} items.`;
   
   const todoContainer = document.createElement('div');
@@ -37,7 +55,15 @@ function addItem(value, importance) {
 
   const todoTitle = document.createElement('h3');
   todoTitle.classList.add('todo-title');
-  todoTitle.textContent = value + selected_priority;
+  todoTitle.textContent = `${value}`;
+  
+  const todoPriority = document.createElement('h3');
+  todoPriority.classList.add('todo-priority');
+  todoPriority.textContent = `${selected_priority}`;
+  
+  const todoCategorie = document.createElement('h3');
+  todoCategorie.classList.add('todo-categorie');
+  todoCategorie.textContent = `${selected_categorie}`;
 
 
   const buttonEdit = document.createElement('button');
@@ -54,6 +80,8 @@ function addItem(value, importance) {
   buttonFinish.textContent = 'Finish';
 
   todoContainer.appendChild(todoTitle);
+  todoContainer.appendChild(todoPriority);
+  todoContainer.appendChild(todoCategorie);
   todoContainer.appendChild(buttonEdit);
   todoContainer.appendChild(buttonDelete);
   todoContainer.appendChild(buttonFinish);
@@ -140,16 +168,19 @@ todoList.addEventListener('click', handleClick);
 
 buttonAdd.addEventListener('click', () => {
   const value = input.value;
-  const priority = select.value;
+  const priority = selectPriorities.value;
+  const categorie = selectCategories.value;
   if (value.trim() === '') {
     alert('you must write something!');
     return;
-  }
-  
-  if (priority === "") {
+  } else if (priority === "") {
     alert('you must choose a priority!');
     return;
+  } else if (categorie === "") {
+    alert('you must choose a categorie');
+    return;
   }
+
   addItem(value);
   save();
 });
