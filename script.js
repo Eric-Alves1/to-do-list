@@ -13,10 +13,9 @@ function clearInput() {
 const myMap = new Map();
 let id = 0;
 
-function addItem(value) {
+function addItem(value, priority, categorie) {
   id++;
   
-  const priority = selectPriorities.value;
   let selected_priority;
   if (priority === 'veryImportant') {
     selected_priority = " Priority: Very important";
@@ -28,7 +27,6 @@ function addItem(value) {
     selected_priority = "";
   }
   
-  const categorie = selectCategories.value;
   let selected_categorie;
   if (categorie === 'personal') {
     selected_categorie = " Categorie: Personal";
@@ -44,7 +42,11 @@ function addItem(value) {
     selected_categorie = "";
   }
   
-  myMap.set(id.toString(), value);
+  myMap.set(id.toString(), {
+    text: value,
+    selectedPriority = priority,
+    selectedCategorie = categorie
+  });
   selectPriorities.value = "";
   selectCategories.value = "";
   number_of_items.textContent = `${myMap.size} items.`;
@@ -55,15 +57,15 @@ function addItem(value) {
 
   const todoTitle = document.createElement('h3');
   todoTitle.classList.add('todo-title');
-  todoTitle.textContent = `${value}`;
+  todoTitle.textContent = value;
   
   const todoPriority = document.createElement('h3');
   todoPriority.classList.add('todo-priority');
-  todoPriority.textContent = `${selected_priority}`;
+  todoPriority.textContent = priority;
   
   const todoCategorie = document.createElement('h3');
   todoCategorie.classList.add('todo-categorie');
-  todoCategorie.textContent = `${selected_categorie}`;
+  todoCategorie.textContent = categorie;
 
 
   const buttonEdit = document.createElement('button');
@@ -181,7 +183,7 @@ buttonAdd.addEventListener('click', () => {
     return;
   }
 
-  addItem(value);
+  addItem(value, priority, categorie);
   save();
 });
 
