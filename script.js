@@ -12,11 +12,15 @@ function clearInput() {
 
 const myMap = new Map();
 let id = 0;
+let pendingTasks = 0;
+let completedTasks = 0;
 
 function addItem(value, priority, categorie) {
   id++;
+  pendingTasks++;
   
   let selected_priority;
+  let selected_priority_weight;
   if (priority === 'Very-Important') {
     selected_priority = " Priority: Very-Important";
     selected_priority_weight = 1;
@@ -51,7 +55,10 @@ function addItem(value, priority, categorie) {
     selectedCategorie: categorie,
     done: false
   });
-  number_of_items.textContent = `${myMap.size} items.`;
+  
+  const data = myMap.get(id.toString());
+  number_of_items.textContent = `${pendingTasks} Items pending/ ${completedTasks} Items completed`;
+  console.log(data)
   
   const todoContainer = document.createElement('div');
   todoContainer.classList.add('todo-item');
@@ -166,24 +173,31 @@ function Edit(item) {
 
 function Delete(item) {
   const itemId = item.getAttribute('id');
+  const data = myMap.get(itemId);
   if (itemId) {
+    pendingTasks--;
     myMap.delete(itemId);
   }
   item.remove();
-  number_of_items.textContent = `${myMap.size} items.`;
+  console.log(data)
+  number_of_items.textContent = `${pendingTasks} Items pending/ ${completedTasks} Items completed`;
 }
-
+/*
 function Finish(item) {
   const itemId = item.getAttribute('id');
   const data = myMap.get(itemId);
   if (data.done === false) {
     data.done = true;
+    data.completedTasks += 1;
+    data.pendingTasks -= 1;
   } else if (data.done === true) {
     data.done = false;
+    data.completedTasks -= 1;
+    data.pendingTasks += 1;
   }
-  console.log(data)
+  number_of_items.textContent = `${data.pendingTasks} Items pending/ ${data.completedTasks} Items completed`;
   item.classList.toggle('finished');
-}
+}*/
 
 function handleClick(event) {
   const item = event.target.closest('.todo-item');
@@ -206,7 +220,7 @@ function getValues() {
 
 function load() {
   for (const stored_values of JSON.parse(localStorage.getItem('todo-list') ?? '[]')) {
-    addItem(stored_values.text, stored_values.selectedPriority, stored_values.selectedCategorie, stored_values.done);
+    addItem(stored_values.text, stored_values.selectedPriority, stored_values.selectedCategorie);
   }
 }
 
