@@ -65,6 +65,14 @@ function addItem(value, priority, categorie) {
   todoCategorie.classList.add('todo-categorie');
   todoCategorie.textContent = selected_categorie;
 
+  const createDate = new Date();
+  const year = createDate.getFullYear();
+  const month = createDate.getMonth() + 1;
+  const day = createDate.getDate();
+  
+  const todoDate = document.createElement('h3');
+  todoDate.classList.add('todo-date');
+  todoDate.textContent = `Date: ${year}/${month}/${day}`;
 
   const buttonEdit = document.createElement('button');
   buttonEdit.classList.add('button-edit');
@@ -82,6 +90,7 @@ function addItem(value, priority, categorie) {
   todoContainer.appendChild(todoTitle);
   todoContainer.appendChild(todoPriority);
   todoContainer.appendChild(todoCategorie);
+  todoContainer.appendChild(todoDate);
   todoContainer.appendChild(buttonEdit);
   todoContainer.appendChild(buttonDelete);
   todoContainer.appendChild(buttonFinish);
