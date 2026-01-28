@@ -1,3 +1,12 @@
+class TodoItem {
+  constructor(text, selectedPriority, selectedCategorie) {
+    this.text = text;
+    this.selectedPriority = selectedPriority;
+    this.selectedCategorie = selectedCategorie;
+  }
+}
+console.log(new TodoItem('some text', 'Very-Important', 'i did not learned about how to stop being dumb..'));
+
 const input = document.querySelector('#input');
 const buttonAdd = document.querySelector('#new-task');
 const number_of_items = document.querySelector('#numItems');
@@ -5,22 +14,18 @@ const selectPriorities = document.querySelector('#priority');
 const selectCategories = document.querySelector('#categorie');
 const todoList = document.querySelector('#todo-list');
 
-function clearInput() {
-  input.value = '';
-  input.focus();
-}
-
 const myMap = new Map();
 let id = 0;
 let pendingTasks = 0;
 let completedTasks = 0;
+let selected_priority_weight;
+
 
 function addItem(value, priority, categorie, done = false) {
   id++;
   pendingTasks++;
   
   let selected_priority;
-  let selected_priority_weight;
   if (priority === 'Very-Important') {
     selected_priority = " Priority: Very-Important";
     selected_priority_weight = 1;
@@ -49,12 +54,7 @@ function addItem(value, priority, categorie, done = false) {
     selected_categorie = "";
   }
   
-  myMap.set(id.toString(), {
-    text: value,
-    selectedPriority: priority,
-    selectedCategorie: categorie,
-    finish: done
-  });
+  myMap.set(id.toString(), new TodoItem(value, selected_priority, selected_categorie));
   
   const data = myMap.get(id.toString());
   const todoContainer = document.createElement('div');
@@ -132,11 +132,7 @@ function Edit(item) {
       return;
     }
 
-      myMap.set(itemId, {
-        text: editing.value,
-        selectedPriority: editingPriority.value,
-        selectedCategorie: editingCategorie.value
-      });
+      myMap.set(itemId, new TodoItem(editing.value, editingPriority.value, editingCategorie.value));
       
       todoTitle.textContent = editing.value;
       todoPriority.textContent = `Priority: ${editingPriority.value}`;
@@ -239,12 +235,18 @@ function save() {
   localStorage.setItem('todo-list', JSON.stringify(getValues()));
 }
 
+function clearInput() {
+  input.value = '';
+  input.focus();
+}
+
 todoList.addEventListener('click', handleClick);
 
 buttonAdd.addEventListener('click', () => {
   const value = input.value;
   const priority = selectPriorities.value;
   const categorie = selectCategories.value;
+  
   if (value.trim() === '') {
     alert('you must write something!');
     return;
@@ -255,7 +257,7 @@ buttonAdd.addEventListener('click', () => {
     alert('you must choose a categorie');
     return;
   }
-
+  
   addItem(value, priority, categorie);
   save();
 });
