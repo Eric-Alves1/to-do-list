@@ -182,22 +182,19 @@ function Delete(item) {
   console.log(data)
   number_of_items.textContent = `${pendingTasks} Items pending/ ${completedTasks} Items completed`;
 }
-/*
+
 function Finish(item) {
   const itemId = item.getAttribute('id');
   const data = myMap.get(itemId);
   if (data.done === false) {
     data.done = true;
-    data.completedTasks += 1;
-    data.pendingTasks -= 1;
+    item.classList.add('finished');
   } else if (data.done === true) {
     data.done = false;
-    data.completedTasks -= 1;
-    data.pendingTasks += 1;
+    item.classList.remove('finished');
   }
   number_of_items.textContent = `${data.pendingTasks} Items pending/ ${data.completedTasks} Items completed`;
-  item.classList.toggle('finished');
-}*/
+}
 
 function handleClick(event) {
   const item = event.target.closest('.todo-item');
