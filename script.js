@@ -188,12 +188,16 @@ function Finish(item) {
   const data = myMap.get(itemId);
   if (data.done === false) {
     data.done = true;
+    completedTasks++;
+    pendingTasks--;
     item.classList.add('finished');
   } else if (data.done === true) {
     data.done = false;
+    completedTasks--;
+    pendingTasks++;
     item.classList.remove('finished');
   }
-  number_of_items.textContent = `${data.pendingTasks} Items pending/ ${data.completedTasks} Items completed`;
+  number_of_items.textContent = `${pendingTasks} Items pending/ ${completedTasks} Items completed`;
 }
 
 function handleClick(event) {
