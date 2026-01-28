@@ -19,10 +19,13 @@ function addItem(value, priority, categorie) {
   let selected_priority;
   if (priority === 'Very-Important') {
     selected_priority = " Priority: Very-Important";
+    selected_priority_weight = 1;
   } else if (priority === 'important') {
     selected_priority = " Priority: Important";
+    selected_priority_weight = 2;
   } else if (priority === 'Less-Important') {
     selected_priority = " Priority: Less-Important";
+    selected_priority_weight = 3;
   } else {
     selected_priority = "";
   }
@@ -45,7 +48,8 @@ function addItem(value, priority, categorie) {
   myMap.set(id.toString(), {
     text: value,
     selectedPriority: priority,
-    selectedCategorie: categorie
+    selectedCategorie: categorie,
+    done: false
   });
   number_of_items.textContent = `${myMap.size} items.`;
   
@@ -170,6 +174,14 @@ function Delete(item) {
 }
 
 function Finish(item) {
+  const itemId = item.getAttribute('id');
+  const data = myMap.get(itemId);
+  if (data.done === false) {
+    data.done = true;
+  } else if (data.done === true) {
+    data.done = false;
+  }
+  console.log(data)
   item.classList.toggle('finished');
 }
 
@@ -194,7 +206,7 @@ function getValues() {
 
 function load() {
   for (const stored_values of JSON.parse(localStorage.getItem('todo-list') ?? '[]')) {
-    addItem(stored_values.text, stored_values.selectedPriority, stored_values.selectedCategorie);
+    addItem(stored_values.text, stored_values.selectedPriority, stored_values.selectedCategorie, stored_values.done);
   }
 }
 
