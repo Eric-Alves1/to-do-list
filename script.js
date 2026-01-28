@@ -15,7 +15,7 @@ let id = 0;
 let pendingTasks = 0;
 let completedTasks = 0;
 
-function addItem(value, priority, categorie) {
+function addItem(value, priority, categorie, done = false) {
   id++;
   pendingTasks++;
   
@@ -53,16 +53,19 @@ function addItem(value, priority, categorie) {
     text: value,
     selectedPriority: priority,
     selectedCategorie: categorie,
-    done: false
+    finish: done
   });
   
   const data = myMap.get(id.toString());
-  number_of_items.textContent = `${pendingTasks} Items pending/ ${completedTasks} Items completed`;
-  console.log(data)
-  
   const todoContainer = document.createElement('div');
   todoContainer.classList.add('todo-item');
+  if (data.finish === true) {
+    completedTasks++;
+    pendingTasks--;
+    todoContainer.classList.add('finished');
+  }
   todoContainer.setAttribute('id', id);
+  number_of_items.textContent = `${pendingTasks} Items pending / ${completedTasks} Items completed`;
 
   const todoTitle = document.createElement('h3');
   todoTitle.classList.add('todo-title');
@@ -179,25 +182,32 @@ function Delete(item) {
     myMap.delete(itemId);
   }
   item.remove();
-  console.log(data)
-  number_of_items.textContent = `${pendingTasks} Items pending/ ${completedTasks} Items completed`;
+  number_of_items.textContent = `${pendingTasks} Items pending / ${completedTasks} Items completed`;
 }
 
 function Finish(item) {
   const itemId = item.getAttribute('id');
   const data = myMap.get(itemId);
-  if (data.done === false) {
-    data.done = true;
+  if (data.finish === false) {
+    data.finish = true;
     completedTasks++;
     pendingTasks--;
     item.classList.add('finished');
-  } else if (data.done === true) {
-    data.done = false;
+  } else if (data.finish === true) {
+    data.finish = false;
     completedTasks--;
     pendingTasks++;
     item.classList.remove('finished');
   }
-  number_of_items.textContent = `${pendingTasks} Items pending/ ${completedTasks} Items completed`;
+  
+  myMap.set(itemId, {
+    text: data.text,
+    selectedPriority: data.selectedPriority,
+    selectedCategorie: data.selectedCategorie,
+    finish: data.finish
+  })
+  
+  number_of_items.textContent = `${pendingTasks} Items pending / ${completedTasks} Items completed`;
 }
 
 function handleClick(event) {
@@ -221,7 +231,7 @@ function getValues() {
 
 function load() {
   for (const stored_values of JSON.parse(localStorage.getItem('todo-list') ?? '[]')) {
-    addItem(stored_values.text, stored_values.selectedPriority, stored_values.selectedCategorie);
+    addItem(stored_values.text, stored_values.selectedPriority, stored_values.selectedCategorie, stored_values.finish);
   }
 }
 
