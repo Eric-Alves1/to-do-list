@@ -1,71 +1,83 @@
 class TodoItem {
-  constructor(text, selectedPriority, selectedCategorie) {
+  constructor(text, priorityValue, categorieValue, finish) {
+    if (text === undefined || priorityValue === undefined || categorieValue === undefined || finish === undefined) {
+      throw new Error('An argument is missing!');
+    }
     this.text = text;
-    this.selectedPriority = selectedPriority;
-    this.selectedCategorie = selectedCategorie;
+    this.priorityValue = priorityValue;
+    this.categorieValue = categorieValue;
+    this.finish = finish;
   }
 }
-console.log(new TodoItem('some text', 'Very-Important', 'i did not learned about how to stop being dumb..'));
 
 const input = document.querySelector('#input');
 const buttonAdd = document.querySelector('#new-task');
-const number_of_items = document.querySelector('#numItems');
+const totalItems = document.querySelector('#totalItems');
+const pendingItems = document.querySelector('#pendingItems');
+const completedItems = document.querySelector('#completedItems');
 const selectPriorities = document.querySelector('#priority');
 const selectCategories = document.querySelector('#categorie');
 const todoList = document.querySelector('#todo-list');
 
 const myMap = new Map();
 let id = 0;
-let pendingTasks = 0;
-let completedTasks = 0;
-let selected_priority_weight;
-
+let totalText = 0;
+let pendingText = 0;
+let completedText = 0;
 
 function addItem(value, priority, categorie, done = false) {
   id++;
-  pendingTasks++;
+  totalText++;
+  pendingText++;
   
-  let selected_priority;
-  if (priority === 'Very-Important') {
-    selected_priority = " Priority: Very-Important";
+    let priority_text;
+    let selected_priority_weight;
+  if (priority === 'veryImportant') {
+    priority_text = " Priority: Very-Important";
     selected_priority_weight = 1;
   } else if (priority === 'important') {
-    selected_priority = " Priority: Important";
+    priority_text = " Priority: Important";
     selected_priority_weight = 2;
-  } else if (priority === 'Less-Important') {
-    selected_priority = " Priority: Less-Important";
+  } else if (priority === 'lessImportant') {
+    priority_text = " Priority: Less-Important";
     selected_priority_weight = 3;
-  } else {
-    selected_priority = "";
+  } else if (priority === '') {
+    alert('you must choose a priority!');
+    return;
+  }
+
+  let categorie_text;
+  if (categorie === 'personal') {
+    categorie_text = " Categorie: Personal";
+  } else if (categorie === 'work') {
+    categorie_text = " Categorie: Work";
+  } else if (categorie === 'study') {
+    categorie_text = " Categorie: Study";
+  } else if (categorie === 'health') {
+    categorie_text = " Categorie: Health";
+  } else if (categorie === 'others') {
+    categorie_text = " Categorie: Others";
+  } else if (categorie === '') {
+    alert('you must choose a categorie!');
+    return;
   }
   
-  let selected_categorie;
-  if (categorie === 'Personal') {
-    selected_categorie = " Categorie: Personal";
-  } else if (categorie === 'Work') {
-    selected_categorie = " Categorie: Work";
-  } else if (categorie === 'Study') {
-    selected_categorie = " Categorie: Study";
-  } else if (categorie === 'Health') {
-    selected_categorie = " Categorie: Health";
-  } else if (categorie === 'Others') {
-    selected_categorie = " Categorie: Others";
-  } else {
-    selected_categorie = "";
-  }
-  
-  myMap.set(id.toString(), new TodoItem(value, selected_priority, selected_categorie));
+  myMap.set(id.toString(), new TodoItem(value, priority, categorie, done));
   
   const data = myMap.get(id.toString());
+  
   const todoContainer = document.createElement('div');
   todoContainer.classList.add('todo-item');
   if (data.finish === true) {
-    completedTasks++;
-    pendingTasks--;
+    completedText++;
+    pendingText--;
     todoContainer.classList.add('finished');
   }
-  todoContainer.setAttribute('id', id);
-  number_of_items.textContent = `${pendingTasks} Items pending / ${completedTasks} Items completed`;
+  todoContainer.setAttribute('id', id.toString());
+  
+  totalItems.textContent = `${totalText} Total items`;
+  pendingItems.textContent = `${pendingText} Pending tasks`;
+  completedItems.textContent = `${completedText} Completed tasks`;
 
   const todoTitle = document.createElement('h3');
   todoTitle.classList.add('todo-title');
@@ -73,11 +85,11 @@ function addItem(value, priority, categorie, done = false) {
   
   const todoPriority = document.createElement('h3');
   todoPriority.classList.add('todo-priority');
-  todoPriority.textContent = selected_priority;
+  todoPriority.textContent = priority_text;
   
   const todoCategorie = document.createElement('h3');
   todoCategorie.classList.add('todo-categorie');
-  todoCategorie.textContent = selected_categorie;
+  todoCategorie.textContent = categorie_text;
 
   const createDate = new Date();
   const year = createDate.getFullYear();
@@ -132,11 +144,33 @@ function Edit(item) {
       return;
     }
 
-      myMap.set(itemId, new TodoItem(editing.value, editingPriority.value, editingCategorie.value));
+      myMap.set(itemId, new TodoItem(editing.value, editingPriority.value, editingCategorie.value, data.finish));
       
-      todoTitle.textContent = editing.value;
-      todoPriority.textContent = `Priority: ${editingPriority.value}`;
-      todoCategorie.textContent = `Categorie: ${editingCategorie.value}`;
+      let editedPriorityText;
+      if (editingPriority.value === 'veryImportant') {
+        editedPriorityText = `Priority: Very-Important`;
+      } else if (editingPriority.value === 'important') {
+        editedPriorityText = `Priority: Important`;
+      } else if (editingPriority.value === 'lessImportant') {
+        editedPriorityText = `Priority: Less-Important`;
+      }
+      
+      let editedCategorieText;
+      if (editingCategorie.value === 'personal') {
+        editedCategorieText = `Categorie: Personal`;
+      } else if (editingCategorie.value === 'work') {
+        editedCategorieText = `Categorie: Work`;
+      } else if (editingCategorie.value === 'study') {
+        editedCategorieText = `Categorie: Study`
+      } else if (editingCategorie.value === 'health') {
+        editedCategorieText = `Categorie: Health`
+      } else if (editingCategorie.value === 'others') {
+        editedCategorieText = `Categorie: Others`
+      }
+      
+      todoTitle.textContent = `Task: ${editing.value}`;
+      todoPriority.textContent = editedPriorityText;
+      todoCategorie.textContent = editedCategorieText;
       
       todoTitle.style.display = 'block';
       todoPriority.style.display = 'block';
@@ -157,8 +191,8 @@ function Edit(item) {
   editCategorie.classList.add('edit-categorie');
 
   editInput.value = data.text;
-  editPriority.value = data.selectedPriority;
-  editCategorie.value = data.selectedCategorie;
+  editPriority.value = data.priorityValue;
+  editCategorie.value = data.categorieValue;
   
   todoTitle.style.display = 'none';
   todoPriority.style.display = 'none';
@@ -173,12 +207,19 @@ function Edit(item) {
 function Delete(item) {
   const itemId = item.getAttribute('id');
   const data = myMap.get(itemId);
-  if (itemId) {
-    pendingTasks--;
+  if (itemId && data.finish === false) {
+    totalText--;
+    pendingText--;
+    myMap.delete(itemId);
+  } else if (itemId && data.finish === true) {
+    totalText--;
+    completedText--;
     myMap.delete(itemId);
   }
   item.remove();
-  number_of_items.textContent = `${pendingTasks} Items pending / ${completedTasks} Items completed`;
+  totalItems.textContent = `${totalText} Total items`;
+  pendingItems.textContent = `${pendingText} Pending items`;
+  completedItems.textContent = `${completedText} Completed items`;
 }
 
 function Finish(item) {
@@ -186,24 +227,21 @@ function Finish(item) {
   const data = myMap.get(itemId);
   if (data.finish === false) {
     data.finish = true;
-    completedTasks++;
-    pendingTasks--;
+    completedText++;
+    pendingText--;
     item.classList.add('finished');
   } else if (data.finish === true) {
     data.finish = false;
-    completedTasks--;
-    pendingTasks++;
+    completedText--;
+    pendingText++;
     item.classList.remove('finished');
   }
   
-  myMap.set(itemId, {
-    text: data.text,
-    selectedPriority: data.selectedPriority,
-    selectedCategorie: data.selectedCategorie,
-    finish: data.finish
-  })
+  myMap.set(itemId, new TodoItem(data.text, data.priorityValue, data.categorieValue, data.finish));
   
-  number_of_items.textContent = `${pendingTasks} Items pending / ${completedTasks} Items completed`;
+  totalItems.textContent = `${totalText} Total items`;
+  pendingItems.textContent = `${pendingText} Pending items`;
+  completedItems.textContent = `${completedText} Completed items`;
 }
 
 function handleClick(event) {
@@ -227,7 +265,7 @@ function getValues() {
 
 function load() {
   for (const stored_values of JSON.parse(localStorage.getItem('todo-list') ?? '[]')) {
-    addItem(stored_values.text, stored_values.selectedPriority, stored_values.selectedCategorie, stored_values.finish);
+    addItem(stored_values.text, stored_values.priorityValue, stored_values.categorieValue, stored_values.finish);
   }
 }
 
