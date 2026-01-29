@@ -129,7 +129,7 @@ class TodoList {
     const todoPriority = item.querySelector('.todo-priority');
     const todoCategorie = item.querySelector('.todo-categorie');
   
-    const itemId = item.getAttribute('id');
+    const itemId = parseInt(item.getAttribute('id'));
     const data = this.myMap.get(itemId);
   
     if (editing) {
@@ -199,7 +199,7 @@ class TodoList {
   }
   
   Delete(item) {
-    const itemId = item.getAttribute('id');
+    const itemId = parseInt(item.getAttribute('id'));
     const data = this.myMap.get(itemId);
     if (itemId && data.finish === false) {
       this.totalText--;
@@ -217,7 +217,7 @@ class TodoList {
   }
   
   Finish(item) {
-    const itemId = item.getAttribute('id');
+    const itemId = parseInt(item.getAttribute('id'));
     const data = this.myMap.get(itemId);
     if (data.finish === false) {
       data.finish = true;
