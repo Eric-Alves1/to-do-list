@@ -65,6 +65,10 @@ body {
   max-width: 500px;
 }
 
+#custom {
+  margin-top: 20px;
+}
+
 .todo-item {
   padding: 5px;
   margin-top: 15px;

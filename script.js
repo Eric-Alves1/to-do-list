@@ -1,11 +1,13 @@
 class TodoItem {
-  constructor(text, priorityValue, categorieValue, finish) {
-    if (text === undefined || priorityValue === undefined || categorieValue === undefined || finish === undefined) {
+  constructor(text, priorityValue, categorieValue, date, finish) {
+    if (text === undefined || priorityValue === undefined || categorieValue === undefined || finish === undefined || 
+      date === undefined) {
       throw new Error('An argument is missing!');
     }
     this.text = text;
     this.priorityValue = priorityValue;
     this.categorieValue = categorieValue;
+    this.date = date
     this.finish = finish;
   }
 }
@@ -25,13 +27,13 @@ let totalText = 0;
 let pendingText = 0;
 let completedText = 0;
 
-function addItem(value, priority, categorie, done = false) {
+function addItem(value, priority, categorie, date, done = false) {
   id++;
   totalText++;
   pendingText++;
   
-    let priority_text;
-    let selected_priority_weight;
+  let priority_text;
+  let selected_priority_weight;
   if (priority === 'veryImportant') {
     priority_text = " Priority: Very-Important";
     selected_priority_weight = 1;
@@ -62,10 +64,10 @@ function addItem(value, priority, categorie, done = false) {
     return;
   }
   
-  myMap.set(id.toString(), new TodoItem(value, priority, categorie, done));
+  
+  myMap.set(id.toString(), new TodoItem(value, priority, categorie, date, done));
   
   const data = myMap.get(id.toString());
-  
   const todoContainer = document.createElement('div');
   todoContainer.classList.add('todo-item');
   if (data.finish === true) {
@@ -74,7 +76,6 @@ function addItem(value, priority, categorie, done = false) {
     todoContainer.classList.add('finished');
   }
   todoContainer.setAttribute('id', id.toString());
-  
   totalItems.textContent = `${totalText} Total items`;
   pendingItems.textContent = `${pendingText} Pending tasks`;
   completedItems.textContent = `${completedText} Completed tasks`;
@@ -90,15 +91,10 @@ function addItem(value, priority, categorie, done = false) {
   const todoCategorie = document.createElement('h3');
   todoCategorie.classList.add('todo-categorie');
   todoCategorie.textContent = categorie_text;
-
-  const createDate = new Date();
-  const year = createDate.getFullYear();
-  const month = createDate.getMonth() + 1;
-  const day = createDate.getDate();
   
   const todoDate = document.createElement('h3');
   todoDate.classList.add('todo-date');
-  todoDate.textContent = `Date: ${year}/${month}/${day}`;
+  todoDate.textContent = `Date: ${date[0]}/${date[1]}/${date[2]}`;
 
   const buttonEdit = document.createElement('button');
   buttonEdit.classList.add('button-edit');
@@ -144,7 +140,7 @@ function Edit(item) {
       return;
     }
 
-      myMap.set(itemId, new TodoItem(editing.value, editingPriority.value, editingCategorie.value, data.finish));
+      myMap.set(itemId, new TodoItem(editing.value, editingPriority.value, editingCategorie.value, data.date, data.finish));
       
       let editedPriorityText;
       if (editingPriority.value === 'veryImportant') {
@@ -237,7 +233,7 @@ function Finish(item) {
     item.classList.remove('finished');
   }
   
-  myMap.set(itemId, new TodoItem(data.text, data.priorityValue, data.categorieValue, data.finish));
+  myMap.set(itemId, new TodoItem(data.text, data.priorityValue, data.categorieValue, data.date, data.finish));
   
   totalItems.textContent = `${totalText} Total items`;
   pendingItems.textContent = `${pendingText} Pending items`;
@@ -265,7 +261,7 @@ function getValues() {
 
 function load() {
   for (const stored_values of JSON.parse(localStorage.getItem('todo-list') ?? '[]')) {
-    addItem(stored_values.text, stored_values.priorityValue, stored_values.categorieValue, stored_values.finish);
+    addItem(stored_values.text, stored_values.priorityValue, stored_values.categorieValue, stored_values.date, stored_values.finish);
   }
 }
 
@@ -284,6 +280,11 @@ buttonAdd.addEventListener('click', () => {
   const value = input.value;
   const priority = selectPriorities.value;
   const categorie = selectCategories.value;
+  const newDate = new Date();
+  const year = newDate.getFullYear();
+  const month = newDate.getMonth() + 1;
+  const day = newDate.getDate();
+  const date = [year, month, day];
   
   if (value.trim() === '') {
     alert('you must write something!');
@@ -296,7 +297,7 @@ buttonAdd.addEventListener('click', () => {
     return;
   }
   
-  addItem(value, priority, categorie);
+  addItem(value, priority, categorie, date);
   save();
 });
 
