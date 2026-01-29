@@ -75,8 +75,8 @@ class TodoList {
     }
     todoContainer.setAttribute('id', this.id.toString());
     totalItems.textContent = `${this.totalText} Total items`;
-    pendingItems.textContent = `${this.pendingText} Pending tasks`;
-    completedItems.textContent = `${this.completedText} Completed tasks`;
+    pendingItems.textContent = `${this.pendingText} Pending items`;
+    completedItems.textContent = `${this.completedText} Completed items`;
   
     const todoTitle = document.createElement('h3');
     todoTitle.classList.add('todo-title');
