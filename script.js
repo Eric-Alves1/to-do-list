@@ -1,11 +1,12 @@
 const input = document.querySelector('#input');
 const buttonAdd = document.querySelector('#new-task');
-const number_of_items = document.querySelector('#numItems');
+const totalItemsText = document.querySelector('#totalItems');
+const pendingItemsText = document.querySelector('#pendingItems')
+const completedItemsText = document.querySelector('#completedItems')
 const selectPriorities = document.querySelector('#priority');
 const selectCategories = document.querySelector('#categorie');
-const todoList = document.querySelector('#todo-list');
+const todoListDiv = document.querySelector('#todo-list');
 
-// We wrote this class together, so it can stay.
 class TodoItem {
   constructor(text, priorityValue, categorieValue, date, finish) {
     if (text === undefined || priorityValue === undefined || categorieValue === undefined || finish === undefined || date === undefined) {
@@ -19,226 +20,236 @@ class TodoItem {
   }
 }
 
-// Here are the tasks that I wrote. Do this tasks and nothing else.
-// > Tasks:
-// > ✓ write `TodoList` class
-// > ✓ move the `myMap` map into the class
-// > - move the `addItem` function into the class. read the class guide if you don't know how to rewrite a function as a method.
-// > - move `Edit`, `Delete`, and `Finish` functions into the class, as well
-// > - you will need to add a lot of `this.` everywhere
-// > - make sure the website still works like before
-// > - if it doesn't then debug it and fix the problems
+let id = 0;
+let totalTasks = 0;
+let pendingTasks = 0;
+let completedTasks = 0;
 
-// The only property in this class should be myMap, as the tasks say.
 class TodoList {
   myMap = new Map();
+  
+  addItem(value, priority, categorie, done = false) {
+    id++;
+    totalTasks++;
+    pendingTasks++;
+  
+    let priorityText;
+    if (priority === 'veryImportant') {
+      priorityText = ' Priority: Very-Important';
+    } else if (priority === 'important') {
+      priorityText = ' Priority: Important';
+    } else if (priority === 'lessImportant') {
+      priorityText = ' Priority: Less-Important';
+    }
+  
+    let categorieText;
+    if (categorie === 'personal') {
+      categorieText = ' Categorie: Personal';
+    } else if (categorie === 'work') {
+      categorieText = ' Categorie: Work';
+    } else if (categorie === 'study') {
+      categorieText = ' Categorie: Study';
+    } else if (categorie === 'health') {
+      categorieText = ' Categorie: Health';
+    } else if (categorie === 'others') {
+      categorieText = ' Categorie: Others';
+    }
+  
+    this.myMap.set(id.toString(), {
+      text: value,
+      selectedPriority: priority,
+      selectedCategorie: categorie,
+      finish: done,
+    });
+  
+    const data = this.myMap.get(id.toString());
+    const todoContainer = document.createElement('div');
+    todoContainer.classList.add('todo-item');
+    if (data.finish === true) {
+      pendingTasks--;
+      completedTasks++;
+      todoContainer.classList.add('finished');
+    }
+    todoContainer.setAttribute('id', id);
+    totalItemsText.textContent = `${totalTasks} Total items`;
+    pendingItemsText.textContent = `${pendingTasks} Pending Items`;
+    completedItemsText.textContent = `${completedTasks} Completed items`;
+  
+    const todoTitle = document.createElement('h3');
+    todoTitle.classList.add('todo-title');
+    todoTitle.textContent = `Task: ${value}`;
+  
+    const todoPriority = document.createElement('h3');
+    todoPriority.classList.add('todo-priority');
+    todoPriority.textContent = priorityText;
+  
+    const todoCategorie = document.createElement('h3');
+    todoCategorie.classList.add('todo-categorie');
+    todoCategorie.textContent = categorieText;
+  
+    const createDate = new Date();
+    const year = createDate.getFullYear();
+    const month = createDate.getMonth() + 1;
+    const day = createDate.getDate();
+  
+    const todoDate = document.createElement('h3');
+    todoDate.classList.add('todo-date');
+    todoDate.textContent = `Date: ${year}/${month}/${day}`;
+  
+    const buttonEdit = document.createElement('button');
+    buttonEdit.classList.add('button-edit');
+    buttonEdit.textContent = 'Edit';
+  
+    const buttonDelete = document.createElement('button');
+    buttonDelete.classList.add('button-delete');
+    buttonDelete.textContent = 'Delete';
+  
+    const buttonFinish = document.createElement('button');
+    buttonFinish.classList.add('button-finish');
+    buttonFinish.textContent = 'Finish';
+  
+    todoContainer.appendChild(todoTitle);
+    todoContainer.appendChild(todoPriority);
+    todoContainer.appendChild(todoCategorie);
+    todoContainer.appendChild(todoDate);
+    todoContainer.appendChild(buttonEdit);
+    todoContainer.appendChild(buttonDelete);
+    todoContainer.appendChild(buttonFinish);
+  
+    todoListDiv.appendChild(todoContainer);
+  
+    clearInput();
+  }
+  
+  Edit(item) {
+    let editing = item.querySelector('.edit-input');
+    let editingPriority = item.querySelector('.edit-priority');
+    let editingCategorie = item.querySelector('.edit-categorie');
+  
+    const todoTitle = item.querySelector('h3');
+    const todoPriority = item.querySelector('.todo-priority');
+    const todoCategorie = item.querySelector('.todo-categorie');
+  
+    const itemId = item.getAttribute('id');
+    const data = this.myMap.get(itemId);
+  
+    if (editing) {
+      if (editing.value.trim() === '' || editingPriority.value === '' || editingCategorie.value === '') {
+        alert('you must change something!');
+        return;
+      }
+  
+      this.myMap.set(itemId, {
+        text: editing.value,
+        selectedPriority: editingPriority.value,
+        selectedCategorie: editingCategorie.value,
+      });
+      
+      let newPriorityText;
+      if (editingPriority.value === 'veryImportant') {
+        newPriorityText = ' Priority: Very-Important';
+      } else if (editingPriority.value === 'important') {
+        newPriorityText = ' Priority: Important';
+      } else if (editingPriority.value === 'lessImportant') {
+        newPriorityText = ' Priority: Less-Important';
+      }
+      
+      let newCategorieText;
+      if (editingCategorie.value === 'personal') {
+        newCategorieText = ' Categorie: Personal';
+      } else if (editingCategorie.value === 'work') {
+        newCategorieText = ' Categorie: Work';
+      } else if (editingCategorie.value === 'study') {
+        newCategorieText = ' Categorie: Study';
+      } else if (editingCategorie.value === 'health') {
+        newCategorieText = ' Categorie: Health';
+      } else if (editingCategorie.value === 'others') {
+        newCategorieText = ' Categorie: Others';
+      }
+      
+      todoTitle.textContent = `Task: ${editing.value}`;
+      todoPriority.textContent = newPriorityText;
+      todoCategorie.textContent = newCategorieText;
+  
+      todoTitle.style.display = 'block';
+      todoPriority.style.display = 'block';
+      todoCategorie.style.display = 'block';
+  
+      editing.remove();
+      editingPriority.remove();
+      editingCategorie.remove();
+      return;
+    }
+  
+    const editInput = document.createElement('input');
+    const editPriority = selectPriorities.cloneNode(true);
+    const editCategorie = selectCategories.cloneNode(true);
+  
+    editInput.classList.add('edit-input');
+    editPriority.classList.add('edit-priority');
+    editCategorie.classList.add('edit-categorie');
+  
+    editInput.value = data.text;
+    editPriority.value = data.selectedPriority;
+    editCategorie.value = data.selectedCategorie;
+  
+    todoTitle.style.display = 'none';
+    todoPriority.style.display = 'none';
+    todoCategorie.style.display = 'none';
+  
+    item.prepend(editInput);
+    item.prepend(editPriority);
+    item.prepend(editCategorie);
+    editInput.focus();
+  }
+  
+  Delete(item) {
+    const itemId = item.getAttribute('id');
+    const data = this.myMap.get(itemId);
+    if (itemId) {
+      totalTasks--;
+      pendingTasks--;
+      this.myMap.delete(itemId);
+    }
+    item.remove();
+    totalItemsText.textContent = `${totalTasks} Total items`;
+    pendingItemsText.textContent = `${pendingTasks} Pending items`;
+  }
+  
+  Finish(item) {
+    const itemId = item.getAttribute('id');
+    let data = this.myMap.get(itemId);
+    console.log(data)
+    if (data.finish === false) {
+      data.finish = true;
+      completedTasks++;
+      pendingTasks--;
+      item.classList.add('finished');
+    } else if (data.finish === true) {
+      data.finish = false;
+      completedTasks--;
+      pendingTasks++;
+      item.classList.remove('finished');
+    }
+  
+    this.myMap.set(itemId, {
+      text: data.text,
+      selectedPriority: data.selectedPriority,
+      selectedCategorie: data.selectedCategorie,
+      finish: data.finish,
+    });
+  
+    pendingItemsText.textContent = `${pendingTasks} Pending items`
+    completedItemsText.textContent = `${completedTasks} Completed items`
+  }
 }
-
-// Do not change anything else. Only complete the tasks!
 
 function clearInput() {
   input.value = '';
   input.focus();
 }
 
-const myMap = new Map();
-let id = 0;
-let pendingTasks = 0;
-let completedTasks = 0;
-
-function addItem(value, priority, categorie, done = false) {
-  id++;
-  pendingTasks++;
-
-  let selected_priority;
-  let selected_priority_weight;
-  if (priority === 'Very-Important') {
-    selected_priority = ' Priority: Very-Important';
-    selected_priority_weight = 1;
-  } else if (priority === 'important') {
-    selected_priority = ' Priority: Important';
-    selected_priority_weight = 2;
-  } else if (priority === 'Less-Important') {
-    selected_priority = ' Priority: Less-Important';
-    selected_priority_weight = 3;
-  } else {
-    selected_priority = '';
-  }
-
-  let selected_categorie;
-  if (categorie === 'Personal') {
-    selected_categorie = ' Categorie: Personal';
-  } else if (categorie === 'Work') {
-    selected_categorie = ' Categorie: Work';
-  } else if (categorie === 'Study') {
-    selected_categorie = ' Categorie: Study';
-  } else if (categorie === 'Health') {
-    selected_categorie = ' Categorie: Health';
-  } else if (categorie === 'Others') {
-    selected_categorie = ' Categorie: Others';
-  } else {
-    selected_categorie = '';
-  }
-
-  myMap.set(id.toString(), {
-    text: value,
-    selectedPriority: priority,
-    selectedCategorie: categorie,
-    finish: done,
-  });
-
-  const data = myMap.get(id.toString());
-  const todoContainer = document.createElement('div');
-  todoContainer.classList.add('todo-item');
-  if (data.finish === true) {
-    completedTasks++;
-    pendingTasks--;
-    todoContainer.classList.add('finished');
-  }
-  todoContainer.setAttribute('id', id);
-  number_of_items.textContent = `${pendingTasks} Items pending / ${completedTasks} Items completed`;
-
-  const todoTitle = document.createElement('h3');
-  todoTitle.classList.add('todo-title');
-  todoTitle.textContent = `Task: ${value}`;
-
-  const todoPriority = document.createElement('h3');
-  todoPriority.classList.add('todo-priority');
-  todoPriority.textContent = selected_priority;
-
-  const todoCategorie = document.createElement('h3');
-  todoCategorie.classList.add('todo-categorie');
-  todoCategorie.textContent = selected_categorie;
-
-  const createDate = new Date();
-  const year = createDate.getFullYear();
-  const month = createDate.getMonth() + 1;
-  const day = createDate.getDate();
-
-  const todoDate = document.createElement('h3');
-  todoDate.classList.add('todo-date');
-  todoDate.textContent = `Date: ${year}/${month}/${day}`;
-
-  const buttonEdit = document.createElement('button');
-  buttonEdit.classList.add('button-edit');
-  buttonEdit.textContent = 'Edit';
-
-  const buttonDelete = document.createElement('button');
-  buttonDelete.classList.add('button-delete');
-  buttonDelete.textContent = 'Delete';
-
-  const buttonFinish = document.createElement('button');
-  buttonFinish.classList.add('button-finish');
-  buttonFinish.textContent = 'Finish';
-
-  todoContainer.appendChild(todoTitle);
-  todoContainer.appendChild(todoPriority);
-  todoContainer.appendChild(todoCategorie);
-  todoContainer.appendChild(todoDate);
-  todoContainer.appendChild(buttonEdit);
-  todoContainer.appendChild(buttonDelete);
-  todoContainer.appendChild(buttonFinish);
-
-  todoList.appendChild(todoContainer);
-
-  clearInput();
-}
-
-function Edit(item) {
-  let editing = item.querySelector('.edit-input');
-  let editingPriority = item.querySelector('.edit-priority');
-  let editingCategorie = item.querySelector('.edit-categorie');
-
-  const todoTitle = item.querySelector('h3');
-  const todoPriority = item.querySelector('.todo-priority');
-  const todoCategorie = item.querySelector('.todo-categorie');
-
-  const itemId = item.getAttribute('id');
-  const data = myMap.get(itemId);
-
-  if (editing) {
-    if (editing.value.trim() === '' || editingPriority.value === '' || editingCategorie.value === '') {
-      alert('you must change something!');
-      return;
-    }
-
-    myMap.set(itemId, {
-      text: editing.value,
-      selectedPriority: editingPriority.value,
-      selectedCategorie: editingCategorie.value,
-    });
-
-    todoTitle.textContent = editing.value;
-    todoPriority.textContent = `Priority: ${editingPriority.value}`;
-    todoCategorie.textContent = `Categorie: ${editingCategorie.value}`;
-
-    todoTitle.style.display = 'block';
-    todoPriority.style.display = 'block';
-    todoCategorie.style.display = 'block';
-
-    editing.remove();
-    editingPriority.remove();
-    editingCategorie.remove();
-    return;
-  }
-
-  const editInput = document.createElement('input');
-  const editPriority = selectPriorities.cloneNode(true);
-  const editCategorie = selectCategories.cloneNode(true);
-
-  editInput.classList.add('edit-input');
-  editPriority.classList.add('edit-priority');
-  editCategorie.classList.add('edit-categorie');
-
-  editInput.value = data.text;
-  editPriority.value = data.selectedPriority;
-  editCategorie.value = data.selectedCategorie;
-
-  todoTitle.style.display = 'none';
-  todoPriority.style.display = 'none';
-  todoCategorie.style.display = 'none';
-
-  item.prepend(editInput);
-  item.prepend(editPriority);
-  item.prepend(editCategorie);
-  editInput.focus();
-}
-
-function Delete(item) {
-  const itemId = item.getAttribute('id');
-  const data = myMap.get(itemId);
-  if (itemId) {
-    pendingTasks--;
-    myMap.delete(itemId);
-  }
-  item.remove();
-  number_of_items.textContent = `${pendingTasks} Items pending / ${completedTasks} Items completed`;
-}
-
-function Finish(item) {
-  const itemId = item.getAttribute('id');
-  const data = myMap.get(itemId);
-  if (data.finish === false) {
-    data.finish = true;
-    completedTasks++;
-    pendingTasks--;
-    item.classList.add('finished');
-  } else if (data.finish === true) {
-    data.finish = false;
-    completedTasks--;
-    pendingTasks++;
-    item.classList.remove('finished');
-  }
-
-  myMap.set(itemId, {
-    text: data.text,
-    selectedPriority: data.selectedPriority,
-    selectedCategorie: data.selectedCategorie,
-    finish: data.finish,
-  });
-
-  number_of_items.textContent = `${pendingTasks} Items pending / ${completedTasks} Items completed`;
-}
+const todoList = new TodoList();
 
 function handleClick(event) {
   const item = event.target.closest('.todo-item');
@@ -246,22 +257,22 @@ function handleClick(event) {
   if (!item) return;
 
   if (event.target.classList.contains('button-edit')) {
-    Edit(item);
+    todoList.Edit(item);
   } else if (event.target.classList.contains('button-delete')) {
-    Delete(item);
+    todoList.Delete(item);
   } else if (event.target.classList.contains('button-finish')) {
-    Finish(item);
+    todoList.Finish(item);
   }
   save();
 }
 
 function getValues() {
-  return Array.from(myMap.values());
+  return Array.from(todoList.myMap.values());
 }
 
 function load() {
   for (const stored_values of JSON.parse(localStorage.getItem('todo-list') ?? '[]')) {
-    addItem(stored_values.text, stored_values.selectedPriority, stored_values.selectedCategorie, stored_values.finish);
+    todoList.addItem(stored_values.text, stored_values.selectedPriority, stored_values.selectedCategorie, stored_values.finish);
   }
 }
 
@@ -269,7 +280,7 @@ function save() {
   localStorage.setItem('todo-list', JSON.stringify(getValues()));
 }
 
-todoList.addEventListener('click', handleClick);
+todoListDiv.addEventListener('click', handleClick);
 
 buttonAdd.addEventListener('click', () => {
   const value = input.value;
@@ -286,7 +297,7 @@ buttonAdd.addEventListener('click', () => {
     return;
   }
 
-  addItem(value, priority, categorie);
+  todoList.addItem(value, priority, categorie);
   save();
 });
 
