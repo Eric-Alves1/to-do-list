@@ -25,44 +25,32 @@ let totalTasks = 0;
 let pendingTasks = 0;
 let completedTasks = 0;
 
-class TodoList {
-  myMap = new Map();
-  
-  addItem(value, priority, categorie, done = false) {
-    id++;
-    totalTasks++;
-    pendingTasks++;
-  
+class TodoDOM {
+  createDom(itemId, itemValue, itemPriority, itemCategorie) {
+    const data = todoList.myMap.get(id.toString());
+    
     let priorityText;
-    if (priority === 'veryImportant') {
+    if (itemPriority === 'veryImportant') {
       priorityText = ' Priority: Very-Important';
-    } else if (priority === 'important') {
+    } else if (itemPriority === 'important') {
       priorityText = ' Priority: Important';
-    } else if (priority === 'lessImportant') {
+    } else if (itemPriority === 'lessImportant') {
       priorityText = ' Priority: Less-Important';
     }
   
     let categorieText;
-    if (categorie === 'personal') {
+    if (itemCategorie === 'personal') {
       categorieText = ' Categorie: Personal';
-    } else if (categorie === 'work') {
+    } else if (itemCategorie === 'work') {
       categorieText = ' Categorie: Work';
-    } else if (categorie === 'study') {
+    } else if (itemCategorie === 'study') {
       categorieText = ' Categorie: Study';
-    } else if (categorie === 'health') {
+    } else if (itemCategorie === 'health') {
       categorieText = ' Categorie: Health';
-    } else if (categorie === 'others') {
+    } else if (itemCategorie === 'others') {
       categorieText = ' Categorie: Others';
     }
-  
-    this.myMap.set(id.toString(), {
-      text: value,
-      selectedPriority: priority,
-      selectedCategorie: categorie,
-      finish: done,
-    });
-  
-    const data = this.myMap.get(id.toString());
+    
     const todoContainer = document.createElement('div');
     todoContainer.classList.add('todo-item');
     if (data.finish === true) {
@@ -70,14 +58,14 @@ class TodoList {
       completedTasks++;
       todoContainer.classList.add('finished');
     }
-    todoContainer.setAttribute('id', id);
+    todoContainer.setAttribute('id', itemId);
     totalItemsText.textContent = `${totalTasks} Total items`;
     pendingItemsText.textContent = `${pendingTasks} Pending Items`;
     completedItemsText.textContent = `${completedTasks} Completed items`;
   
     const todoTitle = document.createElement('h3');
     todoTitle.classList.add('todo-title');
-    todoTitle.textContent = `Task: ${value}`;
+    todoTitle.textContent = `Task: ${itemValue}`;
   
     const todoPriority = document.createElement('h3');
     todoPriority.classList.add('todo-priority');
@@ -117,7 +105,27 @@ class TodoList {
     todoContainer.appendChild(buttonFinish);
   
     todoListDiv.appendChild(todoContainer);
+  }
+}
+
+const todoDom = new TodoDOM();
+
+class TodoList {
+  myMap = new Map();
   
+  addItem(value, priority, categorie, done = false) {
+    id++;
+    totalTasks++;
+    pendingTasks++;
+  
+    this.myMap.set(id.toString(), {
+      text: value,
+      selectedPriority: priority,
+      selectedCategorie: categorie,
+      finish: done,
+    });
+  
+    todoDom.createDom(id, value, priority, categorie);
     clearInput();
   }
   
@@ -206,14 +214,19 @@ class TodoList {
   Delete(item) {
     const itemId = item.getAttribute('id');
     const data = this.myMap.get(itemId);
-    if (itemId) {
+    if (itemId && data.finish === false) {
       totalTasks--;
       pendingTasks--;
+      this.myMap.delete(itemId);
+    } else if (itemId && data.finish === true) {
+      totalTasks--;
+      completedTasks--;
       this.myMap.delete(itemId);
     }
     item.remove();
     totalItemsText.textContent = `${totalTasks} Total items`;
     pendingItemsText.textContent = `${pendingTasks} Pending items`;
+    completedItemsText.textContent = `${completedTasks} Completed items`
   }
   
   Finish(item) {
@@ -244,12 +257,13 @@ class TodoList {
   }
 }
 
+const todoList = new TodoList();
+
 function clearInput() {
   input.value = '';
   input.focus();
 }
 
-const todoList = new TodoList();
 
 function handleClick(event) {
   const item = event.target.closest('.todo-item');
