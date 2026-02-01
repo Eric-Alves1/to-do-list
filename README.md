@@ -7,24 +7,27 @@ You can see the live project <a href="https://Eric-Alves1.github.io/to-do-list">
 The application allows users to add tasks dynamically while applying basic validation rules, such as preventing empty inputs and limiting the number of tasks. All elements are created and managed through JavaScript, without relying on external libraries or frameworks.
 
 ## Features
-- Add tasks dynamically to the list  
-- Prevent adding empty tasks  
-- Clear and refocus the input after adding a task  
+
+- Add tasks dynamically to the list
+- Prevent adding empty tasks
+- Clear and refocus the input after adding a task
 - Finish, delete and edit tasks
 - Store todos items in localStorage
 
 ## What I Practiced
+
 - Creating and manipulating DOM elements
-- Handling events with event listeners  
-- Applying conditional logic for validation  
-- Structuring JavaScript code in a clean and readable way  
+- Handling events with event listeners
+- Applying conditional logic for validation
+- Structuring JavaScript code in a clean and readable way
 - localStorage
 - Good practice with names
 - How to trace the code and think about the flow
 
 ## Technologies Used
-- HTML5  
-- CSS3  
+
+- HTML5
+- CSS3
 - JavaScript
 
 **⚠️ IMPORTANT:** This project is not finished. Some functionality are going to be added or improved.

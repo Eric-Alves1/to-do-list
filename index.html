@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="./style.css">
-    <script type="module" src="./script.js" defer></script>
-    <title>To-do list</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./script.js" defer></script>
+  <title>To-do list</title>
 </head>
+
 <body>
   <div class="padding-container">
     <div id="todo-container">
       <h1>To-do list</h1>
       <div id="header">
-       <input type="text" id="input" placeholder="add a new task">
-       <button id="new-task" type="button">+</button>
+        <input type="text" id="input" placeholder="add a new task">
+        <button id="new-task" type="button">+</button>
       </div>
-      
       <div id="custom">
-        
         <select id="priority">
           <option value="" disabled>Select priority</option>
           <option value="veryImportant">Very important</option>
           <option value="important" selected>Important</option>
           <option value="lessImportant">Less important</option>
         </select>
-        
         <select id="categorie">
           <option value="" disabled>Select categorie</option>
           <option value="personal">Personal</option>
@@ -34,16 +33,14 @@
           <option value="health">Health</option>
           <option value="others" selected>Others</option>
         </select>
-        
       </div>
-      
       <p id="totalItems">0 Total items</p>
       <p id="pendingItems">0 Pending items</p>
       <p id="completedItems">0 Completed items</p>
-      
       <div id="todo-list">
       </div>
     </div>
   </div>
 </body>
+
 </html>

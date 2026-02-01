@@ -6,30 +6,29 @@ let completedTasks = 0;
 
 class TodoList {
   myMap = new Map();
-  
+
   addItem(value, priority, categorie, done = false) {
     const id = GetUniqueId();
     totalTasks++;
     pendingTasks++;
-  
+
     myMap.set(id, new TodoItem(value, priority, categorie, done));
-  
+
     todoDom.createDom(id, value, priority, categorie);
     clearInput();
   }
-  
+
   editItem(item) {
-    
     const data = this.myMap.get(itemId);
-  
+
     if (editing) {
       if (editing.value.trim() === '' || editingPriority.value === '' || editingCategorie.value === '') {
         alert('you must change something!');
         return;
       }
-      
-      todoItem(editing.value, editingPriority.value, editingCategorie.value)
-      
+
+      todoItem(editing.value, editingPriority.value, editingCategorie.value);
+
       let newPriorityText;
       if (editingPriority.value === 'veryImportant') {
         newPriorityText = ' Priority: Very-Important';
@@ -38,7 +37,7 @@ class TodoList {
       } else if (editingPriority.value === 'lessImportant') {
         newPriorityText = ' Priority: Less-Important';
       }
-      
+
       let newCategorieText;
       if (editingCategorie.value === 'personal') {
         newCategorieText = ' Categorie: Personal';
@@ -55,7 +54,7 @@ class TodoList {
     }
     editInput.focus();
   }
-  
+
   deleteItem(item) {
     const itemId = item.getAttribute('id');
     const data = this.myMap.get(itemId);
@@ -69,7 +68,7 @@ class TodoList {
       this.myMap.delete(itemId);
     }
   }
-  
+
   finishItem(item) {
     const itemId = item.getAttribute('id');
     let data = this.myMap.get(itemId);
@@ -82,7 +81,7 @@ class TodoList {
       completedTasks--;
       pendingTasks++;
     }
-    
+
     myMap.set(itemId, new TodoItem(data.value, data.priorityValue, data.categorieValue, data.done));
   }
 }
