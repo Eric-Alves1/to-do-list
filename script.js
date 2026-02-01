@@ -8,6 +8,12 @@ const selectCategories = document.querySelector('#categorie');
 const todoListDiv = document.querySelector('#todo-list');
 
 class TodoDOM {
+  /**
+   * @param {number} itemId
+   * @param {string} itemValue
+   * @param {string} itemPriority
+   * @param {string} itemCategorie
+   */
   createDom(itemId, itemValue, itemPriority, itemCategorie) {
     const data = myMap.get(id.toString());
 
@@ -189,7 +195,7 @@ buttonAdd.addEventListener('click', () => {
     alert('you must choose a categorie');
     return;
   }
-
+  
   todoList.addItem(value, priority, categorie);
   save();
 });

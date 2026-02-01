@@ -6,7 +6,13 @@ let completedTasks = 0;
 
 class TodoList {
   myMap = new Map();
-
+  
+  /**
+   * @param {string} value
+   * @param {string} priority
+   * @param {string} categorie
+   * @param {boolean} done
+   */
   addItem(value, priority, categorie, done = false) {
     const id = GetUniqueId();
     totalTasks++;

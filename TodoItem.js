@@ -3,7 +3,6 @@ export class TodoItem {
    * @param {string} text
    * @param {string} priorityValue
    * @param {string} categorieValue
-   * @param {string} date
    * @param {boolean} finish
    */
   constructor(text, priorityValue, categorieValue, done) {
