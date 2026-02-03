@@ -4,6 +4,7 @@
     "moduleDetection": "force",
     "target": "ESNext",
     "moduleResolution": "Bundler",
+    "noEmit": true,
     "verbatimModuleSyntax": false,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,

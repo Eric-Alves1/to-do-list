@@ -1,17 +1,25 @@
+import { AssertNotNullOrUndefined } from './utility.js';
+
+/** EDIT:
+ * Changing the properties to match TodoList.addItem parameters.
+ */
+
 export class TodoItem {
   /**
-   * @param {string} text
-   * @param {string} priorityValue
-   * @param {string} categorieValue
-   * @param {boolean} finish
+   * @param {string} value
+   * @param {string} priority
+   * @param {string} categorie
+   * @param {boolean} done
    */
-  constructor(text, priorityValue, categorieValue, done) {
-    if (text === undefined || priorityValue === undefined || categorieValue === undefined || done === undefined) {
-      throw new Error('An argument is missing!');
-    }
-    this.text = text;
-    this.priorityValue = priorityValue;
-    this.categorieValue = categorieValue;
+  constructor(value, priority, categorie, done) {
+    AssertNotNullOrUndefined(value);
+    AssertNotNullOrUndefined(priority);
+    AssertNotNullOrUndefined(categorie);
+    AssertNotNullOrUndefined(done);
+
+    this.value = value;
+    this.priority = priority;
+    this.categorie = categorie;
     this.done = done;
   }
 }

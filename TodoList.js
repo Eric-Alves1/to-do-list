@@ -1,93 +1,143 @@
-import { GetUniqueId } from './utility.js';
 import { TodoItem } from './TodoItem.js';
-let totalTasks = 0;
-let pendingTasks = 0;
-let completedTasks = 0;
+import { AssertNotNullOrUndefined, GetUniqueId } from './utility.js';
 
-class TodoList {
-  myMap = new Map();
-  
+/** EDIT:
+ * Keeping track of tasks this way is a bit sloppy and error prone. Instead, we
+ * can write some getting methods that calculate these values when they are
+ * needed.
+ */
+// let totalTasks = 0;
+// let pendingTasks = 0;
+// let completedTasks = 0;
+
+export class TodoList {
+  /** EDIT:
+   * Naming is important! Changed this to something more meaningful. Also, we
+   * can add type information using jsdocs.
+   */
+  /** @type {Map<string, TodoItem>} */
+  idMap = new Map();
+
   /**
    * @param {string} value
    * @param {string} priority
    * @param {string} categorie
    * @param {boolean} done
+   * @returns {{id:string,item:TodoItem}}
    */
-  addItem(value, priority, categorie, done = false) {
+  addItem(value, priority, categorie, done) {
+    AssertNotNullOrUndefined(value);
+    AssertNotNullOrUndefined(priority);
+    AssertNotNullOrUndefined(categorie);
+    AssertNotNullOrUndefined(done);
+
+    /** EDIT:
+     * No longer needed.
+     */
+    // totalTasks++;
+    // pendingTasks++;
+
+    /** EDIT:
+     * Can't do this here. This needs to be done in the TodoDOM class.
+     */
+    // todoDom.createDom(id, value, priority, categorie);
+    // clearInput();
+
     const id = GetUniqueId();
-    totalTasks++;
-    pendingTasks++;
+    const item = new TodoItem(value, priority, categorie, done);
+    this.idMap.set(id, item);
 
-    myMap.set(id, new TodoItem(value, priority, categorie, done));
-
-    todoDom.createDom(id, value, priority, categorie);
-    clearInput();
+    return { id, item };
   }
 
-  editItem(item) {
-    const data = this.myMap.get(itemId);
+  /** EDIT:
+   * All other functions must rely on the `id` only.
+   */
 
-    if (editing) {
-      if (editing.value.trim() === '' || editingPriority.value === '' || editingCategorie.value === '') {
-        alert('you must change something!');
-        return;
-      }
+  /**
+   * Updates map item with values from item parameter.
+   * @param {string} id
+   * @param {TodoItem} item
+   * @returns {void}
+   */
+  editItem(id, item) {
+    AssertNotNullOrUndefined(id);
+    AssertNotNullOrUndefined(item);
 
-      todoItem(editing.value, editingPriority.value, editingCategorie.value);
-
-      let newPriorityText;
-      if (editingPriority.value === 'veryImportant') {
-        newPriorityText = ' Priority: Very-Important';
-      } else if (editingPriority.value === 'important') {
-        newPriorityText = ' Priority: Important';
-      } else if (editingPriority.value === 'lessImportant') {
-        newPriorityText = ' Priority: Less-Important';
-      }
-
-      let newCategorieText;
-      if (editingCategorie.value === 'personal') {
-        newCategorieText = ' Categorie: Personal';
-      } else if (editingCategorie.value === 'work') {
-        newCategorieText = ' Categorie: Work';
-      } else if (editingCategorie.value === 'study') {
-        newCategorieText = ' Categorie: Study';
-      } else if (editingCategorie.value === 'health') {
-        newCategorieText = ' Categorie: Health';
-      } else if (editingCategorie.value === 'others') {
-        newCategorieText = ' Categorie: Others';
-      }
-      return;
-    }
-    editInput.focus();
-  }
-
-  deleteItem(item) {
-    const itemId = item.getAttribute('id');
-    const data = this.myMap.get(itemId);
-    if (itemId && data.done === false) {
-      totalTasks--;
-      pendingTasks--;
-      this.myMap.delete(itemId);
-    } else if (itemId && data.done === true) {
-      totalTasks--;
-      completedTasks--;
-      this.myMap.delete(itemId);
+    const mapItem = this.idMap.get(id);
+    if (mapItem) {
+      mapItem.value = item.value;
+      mapItem.priority = item.priority;
+      mapItem.categorie = item.categorie;
+      mapItem.done = item.done;
     }
   }
 
-  finishItem(item) {
-    const itemId = item.getAttribute('id');
-    let data = this.myMap.get(itemId);
-    if (data.done === false) {
-      data.done = true;
-      completedTasks++;
-      pendingTasks--;
-    } else if (data.done === true) {
-      data.done = false;
-      completedTasks--;
-      pendingTasks++;
-    }
+  /**
+   * @param {string} id
+   * @returns {void}
+   */
+  deleteItem(id) {
+    AssertNotNullOrUndefined(id);
 
-    myMap.set(itemId, new TodoItem(data.value, data.priorityValue, data.categorieValue, data.done));
+    this.idMap.delete(id);
+  }
+
+  /**
+   * Returns a deep copy of the map item if id exists.
+   * @param {string} id
+   * @returns {TodoItem|undefined}
+   */
+  getItemCopy(id) {
+    AssertNotNullOrUndefined(id);
+
+    const mapItem = this.idMap.get(id);
+    if (mapItem) {
+      return new TodoItem(mapItem.value, mapItem.priority, mapItem.categorie, mapItem.done);
+    }
+  }
+
+  /**
+   * @returns {TodoItem[]}
+   */
+  getItemArray() {
+    return Array.from(this.idMap.values());
+  }
+
+  /** EDIT:
+   * Getter methods for retrieving item counts.
+   */
+
+  /**
+   * @returns {number}
+   */
+  get totalCount() {
+    return this.idMap.size;
+  }
+
+  /**
+   * @returns {number}
+   */
+  get pendingCount() {
+    let count = 0;
+    for (const [_id, item] of this.idMap) {
+      if (item.done === false) {
+        count += 1;
+      }
+    }
+    return count;
+  }
+
+  /**
+   * @returns {number}
+   */
+  get completedCount() {
+    let count = 0;
+    for (const [_id, item] of this.idMap) {
+      if (item.done === true) {
+        count += 1;
+      }
+    }
+    return count;
   }
 }
