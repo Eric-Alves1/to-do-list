@@ -12,12 +12,6 @@ const selectCategories = IsSelect(document.querySelector('#categorie'));
 const todoListDiv = IsDiv(document.querySelector('#todo-list'));
 
 class TodoDOM {
-  /** EDIT:
-   * Now that we have the TodoItem class, we can pass around TodoItem objects
-   * (instances), instead of passing around raw data. Since the id is only
-   * temporary, it's probably easiest if we pass it directly.
-   */
-
   /**
    * @param {string} id
    * @param {TodoItem} item
@@ -26,56 +20,12 @@ class TodoDOM {
     AssertNotNullOrUndefined(id);
     AssertNotNullOrUndefined(item);
 
-    /** EDIT:
-     * We can move this logic into new methods.
-     */
-
-    // let priorityText;
-    // if (item.priority === 'veryImportant') {
-    //   priorityText = ' Priority: Very-Important';
-    // } else if (item.priority === 'important') {
-    //   priorityText = ' Priority: Important';
-    // } else if (item.priority === 'lessImportant') {
-    //   priorityText = ' Priority: Less-Important';
-    // }
-
-    // let categorieText;
-    // if (item.categorie === 'personal') {
-    //   categorieText = ' Categorie: Personal';
-    // } else if (item.categorie === 'work') {
-    //   categorieText = ' Categorie: Work';
-    // } else if (item.categorie === 'study') {
-    //   categorieText = ' Categorie: Study';
-    // } else if (item.categorie === 'health') {
-    //   categorieText = ' Categorie: Health';
-    // } else if (item.categorie === 'others') {
-    //   categorieText = ' Categorie: Others';
-    // }
-
-    /** EDIT:
-     * I have chosen better names for each of the elements being created below.
-     * Remember, choosing good names is one of the most important types of
-     * decisions we make as programmers.
-     */
-
     const divItem = document.createElement('div');
     divItem.classList.add('todo-item');
     if (item.done === true) {
-      /** EDIT:
-       * No longer needed.
-       */
-      // pendingTasks--;
-      // completedTasks++;
       divItem.classList.add('finished');
     }
     divItem.setAttribute('id', id);
-
-    /** EDIT:
-     * Move these to an update method.
-     */
-    // totalItemsText.textContent = `${todoList.totalCount} Total items`;
-    // pendingItemsText.textContent = `${todoList.pendingCount} Pending Items`;
-    // completedItemsText.textContent = `${todoList.completedCount} Completed items`;
 
     const h3Title = document.createElement('h3');
     h3Title.classList.add('todo-title');
@@ -88,7 +38,11 @@ class TodoDOM {
     const h3Categorie = document.createElement('h3');
     h3Categorie.classList.add('todo-categorie');
     h3Categorie.textContent = this.getCategorieText(item);
-
+  
+    const h3Date = document.createElement('h3');
+    h3Date.classList.add('todo-date');
+    h3Date.textContent = this.getDateText(item);
+    
     const buttonEdit = document.createElement('button');
     buttonEdit.classList.add('button-edit');
     buttonEdit.textContent = 'Edit';
@@ -101,74 +55,10 @@ class TodoDOM {
     buttonFinish.classList.add('button-finish');
     buttonFinish.textContent = 'Finish';
 
-    /** EDIT:
-     * You threw everything into one method, when there were multiple functions
-     * for each of these sections. They should have remained in separate
-     * methods.
-     */
-
-    //    //edit area
-    //    let editing = divItem.querySelector('.edit-input');
-    //    let editingPriority = divItem.querySelector('.edit-priority');
-    //    let editingCategorie = divItem.querySelector('.edit-categorie');
-    //
-    //    const todoTitle = divItem.querySelector('h3');
-    //    const todoPriority = divItem.querySelector('.todo-priority');
-    //    const todoCategorie = divItem.querySelector('.todo-categorie');
-    //
-    //    const itemId = divItem.getAttribute('id');
-    //
-    //    h3Title.textContent = `Task: ${editing.value}`;
-    //    h3Priority.textContent = newPriorityText;
-    //    h3Categorie.textContent = newCategorieText;
-    //
-    //    h3Title.style.display = 'block';
-    //    h3Priority.style.display = 'block';
-    //    h3Categorie.style.display = 'block';
-    //
-    //    editing.remove();
-    //    editingPriority.remove();
-    //    editingCategorie.remove();
-    //
-    //    const editInput = document.createElement('input');
-    //    const editPriority = selectPriorities.cloneNode(true);
-    //    const editCategorie = selectCategories.cloneNode(true);
-    //
-    //    editInput.classList.add('edit-input');
-    //    editPriority.classList.add('edit-priority');
-    //    editCategorie.classList.add('edit-categorie');
-    //
-    //    editInput.value = data.text;
-    //    editPriority.value = data.selectedPriority;
-    //    editCategorie.value = data.selectedCategorie;
-    //
-    //    h3Title.style.display = 'none';
-    //    h3Priority.style.display = 'none';
-    //    h3Categorie.style.display = 'none';
-    //
-    //    item.prepend(editInput);
-    //    item.prepend(editPriority);
-    //    item.prepend(editCategorie);
-    //    //end of edit area
-    //
-    //    //delete area
-    //    item.remove();
-    //    totalItemsText.textContent = `${totalTasks} Total items`;
-    //    pendingItemsText.textContent = `${pendingTasks} Pending items`;
-    //    completedItemsText.textContent = `${completedTasks} Completed items`;
-    //    //end of delete area
-    //
-    //    //finish area
-    //    item.classList.add('finished');
-    //
-    //    item.classList.remove('finished');
-    //    pendingItemsText.textContent = `${pendingTasks} Pending items`;
-    //    completedItemsText.textContent = `${completedTasks} Completed items`;
-    //    //end of finish area
-
     divItem.appendChild(h3Title);
     divItem.appendChild(h3Priority);
     divItem.appendChild(h3Categorie);
+    divItem.appendChild(h3Date);
     divItem.appendChild(buttonEdit);
     divItem.appendChild(buttonDelete);
     divItem.appendChild(buttonFinish);
@@ -191,12 +81,6 @@ class TodoDOM {
     if (!divItem.classList.contains('editing')) {
       divItem.classList.add('editing');
 
-      /** EDIT:
-       * Use setProperty and removeProperty instead of styles directly.
-       */
-      // h3Title.style.display = 'none';
-      // h3Priority.style.display = 'none';
-      // h3Categorie.style.display = 'none';
       h3Title.style.setProperty('display', 'none');
       h3Priority.style.setProperty('display', 'none');
       h3Categorie.style.setProperty('display', 'none');
@@ -214,8 +98,8 @@ class TodoDOM {
       selectEditCategorie.value = item.categorie;
 
       divItem.prepend(inputEdit);
-      divItem.prepend(selectEditPriority);
       divItem.prepend(selectEditCategorie);
+      divItem.prepend(selectEditPriority);
 
       inputEdit.focus();
     } else {
@@ -236,12 +120,6 @@ class TodoDOM {
         h3Priority.textContent = this.getPriorityText(item);
         h3Categorie.textContent = this.getCategorieText(item);
 
-        /** EDIT:
-         * Use setProperty and removeProperty instead of styles directly.
-         */
-        // h3Title.style.display = 'block';
-        // h3Priority.style.display = 'block';
-        // h3Categorie.style.display = 'block';
         h3Title.style.removeProperty('display');
         h3Priority.style.removeProperty('display');
         h3Categorie.style.removeProperty('display');
@@ -277,7 +155,6 @@ class TodoDOM {
   }
 
   /**
-   * A helper method that returns a human readable string for item title.
    * @param {TodoItem} item
    */
   getTitleText(item) {
@@ -285,7 +162,6 @@ class TodoDOM {
   }
 
   /**
-   * A helper method that returns a human readable string for item priority.
    * @param {TodoItem} item
    */
   getPriorityText(item) {
@@ -302,7 +178,6 @@ class TodoDOM {
   }
 
   /**
-   * A helper method that returns a human readable string for item category.
    * @param {TodoItem} item
    */
   getCategorieText(item) {
@@ -322,6 +197,13 @@ class TodoDOM {
       return ' Categorie: Others';
     }
     throw new Error('Unexpected categorie value');
+  }
+  
+  getDateText(item) {
+    const year = item.date.getFullYear();
+    const month = item.date.getMonth() + 1;
+    const day = item.date.getDate();
+    return `Date: ${year}/${month}/${day}`;
   }
 }
 
@@ -348,8 +230,8 @@ function LoadTodoList() {
   if (data) {
     /** @type {TodoItem[]} */
     const itemArray = JSON.parse(data);
-    for (const { value, priority, categorie, done } of itemArray) {
-      const { id, item } = todoList.addItem(value, priority, categorie, done);
+    for (const { value, priority, categorie, done, date } of itemArray) {
+      const { id, item } = todoList.addItem(value, priority, categorie, done, date);
       todoDOM.addNode(id, item);
       UpdateTodoStats();
     }
@@ -360,6 +242,7 @@ buttonAdd.addEventListener('click', () => {
   const value = input.value;
   const priority = selectPriorities.value;
   const categorie = selectCategories.value;
+  const date = new Date();
 
   if (value.trim() === '') {
     alert('you must write something!');
@@ -376,7 +259,7 @@ buttonAdd.addEventListener('click', () => {
     return;
   }
 
-  const { id, item } = todoList.addItem(value, priority, categorie, false);
+  const { id, item } = todoList.addItem(value, priority, categorie, false, date);
   todoDOM.addNode(id, item);
   ResetInput();
   UpdateTodoStats();

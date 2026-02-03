@@ -1,20 +1,7 @@
 import { TodoItem } from './TodoItem.js';
 import { AssertNotNullOrUndefined, GetUniqueId } from './utility.js';
 
-/** EDIT:
- * Keeping track of tasks this way is a bit sloppy and error prone. Instead, we
- * can write some getting methods that calculate these values when they are
- * needed.
- */
-// let totalTasks = 0;
-// let pendingTasks = 0;
-// let completedTasks = 0;
-
 export class TodoList {
-  /** EDIT:
-   * Naming is important! Changed this to something more meaningful. Also, we
-   * can add type information using jsdocs.
-   */
   /** @type {Map<string, TodoItem>} */
   idMap = new Map();
 
@@ -23,39 +10,24 @@ export class TodoList {
    * @param {string} priority
    * @param {string} categorie
    * @param {boolean} done
+   * @param {object} date
    * @returns {{id:string,item:TodoItem}}
    */
-  addItem(value, priority, categorie, done) {
+  addItem(value, priority, categorie, done, date) {
     AssertNotNullOrUndefined(value);
     AssertNotNullOrUndefined(priority);
     AssertNotNullOrUndefined(categorie);
     AssertNotNullOrUndefined(done);
-
-    /** EDIT:
-     * No longer needed.
-     */
-    // totalTasks++;
-    // pendingTasks++;
-
-    /** EDIT:
-     * Can't do this here. This needs to be done in the TodoDOM class.
-     */
-    // todoDom.createDom(id, value, priority, categorie);
-    // clearInput();
+    AssertNotNullOrUndefined(date);
 
     const id = GetUniqueId();
-    const item = new TodoItem(value, priority, categorie, done);
+    const item = new TodoItem(value, priority, categorie, done, date);
     this.idMap.set(id, item);
 
     return { id, item };
   }
-
-  /** EDIT:
-   * All other functions must rely on the `id` only.
-   */
-
+  
   /**
-   * Updates map item with values from item parameter.
    * @param {string} id
    * @param {TodoItem} item
    * @returns {void}
@@ -70,6 +42,7 @@ export class TodoList {
       mapItem.priority = item.priority;
       mapItem.categorie = item.categorie;
       mapItem.done = item.done;
+      mapItem.date = item.date
     }
   }
 
@@ -84,7 +57,6 @@ export class TodoList {
   }
 
   /**
-   * Returns a deep copy of the map item if id exists.
    * @param {string} id
    * @returns {TodoItem|undefined}
    */
@@ -93,9 +65,8 @@ export class TodoList {
 
     const mapItem = this.idMap.get(id);
     if (mapItem) {
-      return new TodoItem(mapItem.value, mapItem.priority, mapItem.categorie, mapItem.done);
-    }
-  }
+      return new TodoItem(mapItem.value, mapItem.priority, mapItem.categorie, mapItem.done, mapItem.date);
+    }}
 
   /**
    * @returns {TodoItem[]}
@@ -103,10 +74,6 @@ export class TodoList {
   getItemArray() {
     return Array.from(this.idMap.values());
   }
-
-  /** EDIT:
-   * Getter methods for retrieving item counts.
-   */
 
   /**
    * @returns {number}
