@@ -1,7 +1,4 @@
-import { TodoItem } from './TodoItem.js';
-import { AssertNotNullOrUndefined, GetUniqueId } from './utility.js';
-
-export class TodoList {
+class TodoList {
   /** @type {Map<string, TodoItem>} */
   idMap = new Map();
 

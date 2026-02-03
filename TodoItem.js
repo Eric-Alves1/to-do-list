@@ -1,6 +1,4 @@
-import { AssertNotNullOrUndefined } from './utility.js';
-
-export class TodoItem {
+class TodoItem {
   /**
    * @param {string} value
    * @param {string} priority

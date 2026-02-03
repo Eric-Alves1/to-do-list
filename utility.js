@@ -5,7 +5,7 @@ let id = 0;
  * simple, but it works for what we need. We increment a number and convert it
  * to string.
  */
-export function GetUniqueId() {
+function GetUniqueId() {
   return (id++).toString(10);
 }
 
@@ -13,7 +13,7 @@ export function GetUniqueId() {
  * Throws an error if the argument is null or undefined.
  * @param {any} arg
  */
-export function AssertNotNullOrUndefined(arg) {
+function AssertNotNullOrUndefined(arg) {
   if (arg == null) {
     throw new Error('Argument is null');
   }
@@ -23,7 +23,7 @@ export function AssertNotNullOrUndefined(arg) {
 }
 
 /** @param {any} arg */
-export function IsButton(arg) {
+function IsButton(arg) {
   if (arg instanceof HTMLButtonElement) {
     return arg;
   }
@@ -31,7 +31,7 @@ export function IsButton(arg) {
 }
 
 /** @param {any} arg */
-export function IsDiv(arg) {
+function IsDiv(arg) {
   if (arg instanceof HTMLDivElement) {
     return arg;
   }
@@ -39,7 +39,7 @@ export function IsDiv(arg) {
 }
 
 /** @param {any} arg */
-export function IsH(arg) {
+function IsH(arg) {
   if (arg instanceof HTMLHeadingElement) {
     return arg;
   }
@@ -47,7 +47,7 @@ export function IsH(arg) {
 }
 
 /** @param {any} arg */
-export function IsInput(arg) {
+function IsInput(arg) {
   if (arg instanceof HTMLInputElement) {
     return arg;
   }
@@ -55,7 +55,7 @@ export function IsInput(arg) {
 }
 
 /** @param {any} arg */
-export function IsP(arg) {
+function IsP(arg) {
   if (arg instanceof HTMLParagraphElement) {
     return arg;
   }
@@ -63,7 +63,7 @@ export function IsP(arg) {
 }
 
 /** @param {any} arg */
-export function IsSelect(arg) {
+function IsSelect(arg) {
   if (arg instanceof HTMLSelectElement) {
     return arg;
   }

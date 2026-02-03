@@ -1,15 +1,12 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "target": "ESNext",
-    "moduleResolution": "Bundler",
+    "module": "preserve",
+    "moduleDetection": "legacy",
     "noEmit": true,
     "verbatimModuleSyntax": false,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "strict": true,
-    "resolveJsonModule": true,
     "allowJs": true,
     "checkJs": true
   }

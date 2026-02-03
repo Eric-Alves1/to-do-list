@@ -1,7 +1,3 @@
-import { TodoItem } from './TodoItem.js';
-import { TodoList } from './TodoList.js';
-import { AssertNotNullOrUndefined, IsButton, IsDiv, IsH, IsInput, IsP, IsSelect } from './utility.js';
-
 const input = IsInput(document.querySelector('#input'));
 const buttonAdd = IsButton(document.querySelector('#new-task'));
 const totalItemsText = IsP(document.querySelector('#totalItems'));
