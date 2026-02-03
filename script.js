@@ -38,11 +38,11 @@ class TodoDOM {
     const h3Categorie = document.createElement('h3');
     h3Categorie.classList.add('todo-categorie');
     h3Categorie.textContent = this.getCategorieText(item);
-  
+
     const h3Date = document.createElement('h3');
     h3Date.classList.add('todo-date');
     h3Date.textContent = this.getDateText(item);
-    
+
     const buttonEdit = document.createElement('button');
     buttonEdit.classList.add('button-edit');
     buttonEdit.textContent = 'Edit';
@@ -198,11 +198,15 @@ class TodoDOM {
     }
     throw new Error('Unexpected categorie value');
   }
-  
+
+  /**
+   * @param {TodoItem} item
+   */
   getDateText(item) {
-    const year = item.date.getFullYear();
-    const month = item.date.getMonth() + 1;
-    const day = item.date.getDate();
+    const date = new Date(item.date);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
     return `Date: ${year}/${month}/${day}`;
   }
 }
@@ -242,7 +246,7 @@ buttonAdd.addEventListener('click', () => {
   const value = input.value;
   const priority = selectPriorities.value;
   const categorie = selectCategories.value;
-  const date = new Date();
+  const date = new Date().toISOString();
 
   if (value.trim() === '') {
     alert('you must write something!');

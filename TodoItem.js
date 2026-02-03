@@ -1,16 +1,12 @@
 import { AssertNotNullOrUndefined } from './utility.js';
 
-/** EDIT:
- * Changing the properties to match TodoList.addItem parameters.
- */
-
 export class TodoItem {
   /**
    * @param {string} value
    * @param {string} priority
    * @param {string} categorie
    * @param {boolean} done
-   * @param {object} date
+   * @param {string} date
    */
   constructor(value, priority, categorie, done, date) {
     AssertNotNullOrUndefined(value);

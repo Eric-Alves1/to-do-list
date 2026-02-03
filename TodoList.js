@@ -10,7 +10,7 @@ export class TodoList {
    * @param {string} priority
    * @param {string} categorie
    * @param {boolean} done
-   * @param {object} date
+   * @param {string} date
    * @returns {{id:string,item:TodoItem}}
    */
   addItem(value, priority, categorie, done, date) {
@@ -26,7 +26,7 @@ export class TodoList {
 
     return { id, item };
   }
-  
+
   /**
    * @param {string} id
    * @param {TodoItem} item
@@ -42,7 +42,7 @@ export class TodoList {
       mapItem.priority = item.priority;
       mapItem.categorie = item.categorie;
       mapItem.done = item.done;
-      mapItem.date = item.date
+      mapItem.date = item.date;
     }
   }
 
@@ -66,7 +66,8 @@ export class TodoList {
     const mapItem = this.idMap.get(id);
     if (mapItem) {
       return new TodoItem(mapItem.value, mapItem.priority, mapItem.categorie, mapItem.done, mapItem.date);
-    }}
+    }
+  }
 
   /**
    * @returns {TodoItem[]}

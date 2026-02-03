@@ -1,3 +1,3 @@
 Bugs
 
-hopefully any bug for now (i guess)
+hopefully no bugs for now (i guess)

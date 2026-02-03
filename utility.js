@@ -6,18 +6,8 @@ let id = 0;
  * to string.
  */
 export function GetUniqueId() {
-  /** EDIT:
-   * We need to conver the id to string before returning it. The `10` means we
-   * want to convert the number into a base 10 representation. This is also the
-   * default value, but I thought I'd point out that we can change the base
-   * representation this way.
-   */
   return (id++).toString(10);
 }
-
-/** EDIT:
- * This function will help us detect errors when calling functions.
- */
 
 /**
  * Throws an error if the argument is null or undefined.
@@ -31,12 +21,6 @@ export function AssertNotNullOrUndefined(arg) {
     throw new Error('Argument is undefined');
   }
 }
-
-/** EDIT:
- * We can write assertion functions for querySelector as well, to catch any
- * errors between the html and js. There are specific functions for this in
- * TypeScript called User Type Guards.
- */
 
 /** @param {any} arg */
 export function IsButton(arg) {
