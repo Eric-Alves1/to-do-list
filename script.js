@@ -1,10 +1,18 @@
 const input = IsInput(document.querySelector('#input'));
 const buttonAdd = IsButton(document.querySelector('#new-task'));
+
 const totalItemsText = IsP(document.querySelector('#totalItems'));
 const pendingItemsText = IsP(document.querySelector('#pendingItems'));
 const completedItemsText = IsP(document.querySelector('#completedItems'));
+
 const selectPriorities = IsSelect(document.querySelector('#priority'));
 const selectCategories = IsSelect(document.querySelector('#categorie'));
+
+const orderByItemTitle = IsSelect(document.querySelector('#orderItem'));
+const orderByItemPriority = IsSelect(document.querySelector('#orderPriority'));
+const orderByItemCategorie = IsSelect(document.querySelector('#orderCategorie'));
+const orderByItemDate = IsSelect(document.querySelector('#orderDate'));
+
 const todoListDiv = IsDiv(document.querySelector('#todo-list'));
 
 class TodoDOM {
@@ -203,12 +211,14 @@ class TodoDOM {
     const year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();
+    
     if (month < 10) {
       month = `0${month}`
     }
     if (day < 10) {
       day = `0${day}`;
     }
+    
     return `Date: ${year}/${month}/${day}`;
   }
 }
