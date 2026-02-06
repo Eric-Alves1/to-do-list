@@ -8,10 +8,11 @@ const completedItemsText = IsP(document.querySelector('#completedItems'));
 const selectPriorities = IsSelect(document.querySelector('#priority'));
 const selectCategories = IsSelect(document.querySelector('#categorie'));
 
-const orderByItemTitle = IsSelect(document.querySelector('#orderItem'));
-const orderByItemPriority = IsSelect(document.querySelector('#orderPriority'));
-const orderByItemCategorie = IsSelect(document.querySelector('#orderCategorie'));
-const orderByItemDate = IsSelect(document.querySelector('#orderDate'));
+const selectByItemTitle = IsSelect(document.querySelector('#orderItem'));
+const selectByItemPriority = IsSelect(document.querySelector('#orderPriority'));
+const selectByItemCategorie = IsSelect(document.querySelector('#orderCategorie'));
+const selectByItemDate = IsSelect(document.querySelector('#orderDate'));
+const orderButton = IsButton(document.querySelector('#orderButton'));
 
 const todoListDiv = IsDiv(document.querySelector('#todo-list'));
 
@@ -157,7 +158,79 @@ class TodoDOM {
     item.done = !item.done;
     divItem.classList.toggle('finished', item.done);
   }
-
+  
+  /**
+   * @param {string} selectedOrderTitle
+   */
+  orderByItemTitle(selectedOrderTitle) {
+    if (selectedOrderTitle === 'noOrder') {
+      return;
+    }
+    
+    const sortedByTitle = Array.from(todoListDiv.children);
+    if (selectedOrderTitle === 'a-z') {
+      sortedByTitle.sort((node_a, node_b) => {
+        const titleA = node_a.querySelector('h3.todo-title')?.textContent;
+        const titleB = node_b.querySelector('h3.todo-title')?.textContent;
+        
+        return titleA.localeCompare(titleB);
+      });
+    } else if (selectedOrderTitle === 'z-a') {
+        sortedByTitle.sort((node_a, node_b) => {
+        const titleA = node_a.querySelector('h3.todo-title')?.textContent;
+        const titleB = node_b.querySelector('h3.todo-title')?.textContent;
+        
+        return titleB.localeCompare(titleA);
+      });
+    }
+  }
+  
+  /**
+   * @param {string} selectedOrderPriority
+   */
+  orderByItemPriority(selectedOrderPriority) {
+    if (selectedOrderPriority === 'noOrder') {
+      return;
+    }
+    
+    const sortedByPriority = Array.from(todoListDiv.children);
+    if (selectedOrderPriority === 'm-l') {
+      console.log('more important to less important');
+    } else if (selectedOrderPriority === 'l-m') {
+      console.log('less important to more important');
+    }
+  }
+  
+  /**
+   * @param {string} selectedOrderCategorie
+   */
+  orderByItemCategorie(selectedOrderCategorie) {
+    if (selectedOrderCategorie === 'noOrder') {
+      return;
+    }
+    
+    if (selectedOrderCategorie === 'a-z') {
+      console.log('categories that starts with A comes before that categories that starts with B');
+    } else if (selectedOrderCategorie === 'z-a') {
+      console.log('categories that starts with B comes before that categories that starts with A')
+    }
+  }
+  
+  /**
+   * @param {string} selectedOrderDate
+   */
+  orderByItemDate(selectedOrderDate) {
+    if (selectedOrderDate === 'noOrder') {
+      return;
+    }
+    
+    if (selectedOrderDate === 'first-last') {
+      console.log('recent items comes before old items');
+    } else if (selectedOrderDate === 'last-first') {
+      console.log('old items comes before recent items');
+    }
+  }
+  
   /**
    * @param {TodoItem} item
    */
@@ -213,7 +286,7 @@ class TodoDOM {
     let day = date.getDate();
     
     if (month < 10) {
-      month = `0${month}`
+      month = `0${month}`;
     }
     if (day < 10) {
       day = `0${day}`;
@@ -236,6 +309,12 @@ function UpdateTodoStats() {
   pendingItemsText.textContent = `${todoList.pendingCount} Pending Items`;
   completedItemsText.textContent = `${todoList.completedCount} Completed items`;
 }
+
+/*
+function deleteTodoListChildrens() {
+  
+}
+*/
 
 function SaveTodoList() {
   localStorage.setItem('todo-list', JSON.stringify(todoList.getItemArray()));
@@ -280,6 +359,19 @@ buttonAdd.addEventListener('click', () => {
   ResetInput();
   UpdateTodoStats();
   SaveTodoList();
+});
+
+orderButton.addEventListener('click', () => {
+  const selectedOrderTitle = selectByItemTitle.value;
+  const selectedOrderPriority = selectByItemPriority.value;
+  const selectedOrderCategorie = selectByItemCategorie.value;
+  const selectedOrderDate = selectByItemDate.value;
+  
+  
+  todoDOM.orderByItemTitle(selectedOrderTitle);
+  todoDOM.orderByItemPriority(selectedOrderPriority);
+  todoDOM.orderByItemCategorie(selectedOrderCategorie);
+  todoDOM.orderByItemDate(selectedOrderDate);
 });
 
 todoListDiv.addEventListener('click', (event) => {

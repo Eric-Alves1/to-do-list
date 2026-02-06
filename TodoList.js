@@ -53,6 +53,10 @@ class TodoList {
     this.idMap.delete(id);
   }
 
+  deleteAllItems() {
+    this.idMap.clear();
+  }
+
   /**
    * @param {string} id
    * @returns {TodoItem|undefined}
