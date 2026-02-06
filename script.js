@@ -358,17 +358,9 @@ class TodoDOM {
    */
   getDateText(item) {
     const date = new Date(item.date);
-    const year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-    
-    if (month < 10) {
-      month = `0${month}`;
-    }
-    if (day < 10) {
-      day = `0${day}`;
-    }
-    
+    const year = date.getFullYear().toString(10);
+    const month = (date.getMonth() + 1).toString(10).padStart(2, '0');
+    const day = date.getDate().toString(10).padStart(2, '0');
     return `Date: ${year}/${month}/${day}`;
   }
 }
