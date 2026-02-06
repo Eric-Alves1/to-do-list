@@ -13,6 +13,7 @@ The application allows users to add tasks dynamically while applying basic valid
 - Clear and refocus the input after adding a task
 - Finish, delete and edit tasks
 - Store todos items in localStorage
+- Order by title, priority, categorie and date
 
 ## What I Practiced
 
@@ -23,6 +24,7 @@ The application allows users to add tasks dynamically while applying basic valid
 - localStorage
 - Good practice with names
 - How to trace the code and think about the flow
+- Different files for differents functionalities
 
 ## Technologies Used
 
