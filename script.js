@@ -374,9 +374,9 @@ function ResetInput() {
 }
 
 function UpdateTodoStats() {
-  totalItemsText.textContent = `${todoList.totalCount} Total items`;
-  pendingItemsText.textContent = `${todoList.pendingCount} Pending Items`;
-  completedItemsText.textContent = `${todoList.completedCount} Completed items`;
+  totalItemsText.textContent = `Total tasks: ${todoList.totalCount}`;
+  pendingItemsText.textContent = `Pending tasks: ${todoList.pendingCount}`;
+  completedItemsText.textContent = `Completed tasks: ${todoList.completedCount}`;
 }
 
 /*

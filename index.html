@@ -37,47 +37,43 @@
           <option value="others" selected>Others</option>
         </select>
       </div>
-      <p id="totalItems">0 Total items</p>
-      <p id="pendingItems">0 Pending items</p>
-      <p id="completedItems">0 Completed items</p>
-      
-      <!-- the styles and how the order is made in the code below is just like that while i dont finish the order system, when i make it works i will replace it for a better and easy way to use it! -->
       
       <div id="order">
         <p>Order by:</p>
         
-        <p>A to Z or Z to A, based in the titles of the todo items.</p>
-        <select id="orderItem">
-          <option value="noOrder" selected>No order</option>
-          <option value="a-z">A-Z</option>
-          <option value="z-a">Z-A</option>
+        <select id="orderItem" class="select-order">
+          <option value="noOrder" selected>Title: (No order)</option>
+          <option value="a-z">Title: (A -> Z)</option>
+          <option value="z-a">Title: (Z -> A)</option>
         </select>
         
-        <p>More important to less important or less important to more important, based on which priority is the item.</p>
-        <select id="orderPriority">
-        <option value="noOrder" selected>No order</option>
-          <option value="m-l">More important to less important</option>
-          <option value="l-m">Less important to more important</option>
+        <select id="orderPriority" class="select-order">
+        <option value="noOrder" selected>Priority: (No order)</option>
+          <option value="m-l">Priority: (Most important -> Least Important)</option>
+          <option value="l-m">Priority: (Least important -> Most important)</option>
         </select>
         
-        <p>A to Z or Z to A, based on the names of the selected categories.</p>
-        <select id="orderCategorie">
-          <option value="noOrder" selected>No order</option>
-          <option value="a-z">A-Z</option>
-          <option value="z-a">Z-A</option>
+        <select id="orderCategorie" class="select-order">
+          <option value="noOrder" selected>Categorie: (No order)</option>
+          <option value="a-z">Category (A -> Z)</option>
+          <option value="z-a">Category (Z -> A)</option>
         </select>
         
-        <p>First item to last item or first item to last item, based on which item was created at first or the last item.</p>
-        <select id="orderDate">
-          <option value="noOrder" selected>No order</option>
-          <option value="first-last">First to last</option>
-          <option value="last-first">Last to first</option>
+        <select id="orderDate" class="select-order">
+          <option value="noOrder" selected>Date: (No order)</option>
+          <option value="first-last">Date (Newest -> Oldest)</option>
+          <option value="last-first">Date (Oldest -> Newest)</option>
         </select>
         
         <p>
           <button id="orderButton" type="button">Confirm</button>
         </p>
       </div>
+      
+      <p id="totalItems" class="count-paragraph">Total tasks: 0</p>
+      <p id="pendingItems" class="count-paragraph">Pending tasks: 0</p>
+      <p id="completedItems" class="count-paragraph">Completed tasks: 0</p>
+      
       <div id="todo-list">
       </div>
     </div>
