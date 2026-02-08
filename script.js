@@ -183,6 +183,10 @@ class TodoDOM {
         return titleB.localeCompare(titleA);
       });
     }
+    
+    for (let i = 0; i < sortedByTitle.length; i++) {
+      todoListDiv.append(sortedByTitle[i]);
+    }
   }
   
   /**
@@ -195,9 +199,56 @@ class TodoDOM {
     
     const sortedByPriority = Array.from(todoListDiv.children);
     if (selectedOrderPriority === 'm-l') {
-      console.log('more important to less important');
+      sortedByPriority.sort((node_a, node_b) => {
+        let priorityWeightA;
+        let priorityWeightB;
+        const priorityA = node_a.querySelector('h3.todo-priority')?.textContent;
+        const priorityB = node_b.querySelector('h3.todo-priority')?.textContent;
+        
+        if (priorityA === ' Priority: Very-Important') {
+          priorityWeightA = 1;
+        } else if (priorityA === ' Priority: Important') {
+          priorityWeightA = 2;
+        } else if (priorityA === ' Priority: Less-Important') {
+          priorityWeightA = 3;
+        }
+        
+        if (priorityB === ' Priority: Very-Important') {
+          priorityWeightB = 1;
+        } else if (priorityB === ' Priority: Important') {
+          priorityWeightB = 2;
+        } else if (priorityB === ' Priority: Less-Important') {
+          priorityWeightB = 3;
+        }        
+        return priorityWeightA - priorityWeightB;
+      });
     } else if (selectedOrderPriority === 'l-m') {
-      console.log('less important to more important');
+      sortedByPriority.sort((node_a, node_b) => {
+        let priorityWeightA;
+        let priorityWeightB;
+        const priorityA = node_a.querySelector('h3.todo-priority')?.textContent;
+        const priorityB = node_b.querySelector('h3.todo-priority')?.textContent;
+        
+        if (priorityA === ' Priority: Very-Important') {
+          priorityWeightA = 1;
+        } else if (priorityA === ' Priority: Important') {
+          priorityWeightA = 2;
+        } else if (priorityA === ' Priority: Less-Important') {
+          priorityWeightA = 3;
+        }
+        
+        if (priorityB === ' Priority: Very-Important') {
+          priorityWeightB = 1;
+        } else if (priorityB === ' Priority: Important') {
+          priorityWeightB = 2;
+        } else if (priorityB === ' Priority: Less-Important') {
+          priorityWeightB = 3;
+        }        
+        return priorityWeightB - priorityWeightA;
+      });
+    }
+    for (let i = 0; i < sortedByPriority.length; i++) {
+      todoListDiv.append(sortedByPriority[i]);
     }
   }
   
@@ -209,10 +260,24 @@ class TodoDOM {
       return;
     }
     
+    const sortedByCategorie = Array.from(todoListDiv.children);
     if (selectedOrderCategorie === 'a-z') {
-      console.log('categories that starts with A comes before that categories that starts with B');
+      sortedByCategorie.sort((node_a, node_b) => {
+        const categorieA = node_a.querySelector('h3.todo-categorie')?.textContent;
+        const categorieB = node_b.querySelector('h3.todo-categorie')?.textContent;
+        
+        return categorieA.localeCompare(categorieB)
+      });
     } else if (selectedOrderCategorie === 'z-a') {
-      console.log('categories that starts with B comes before that categories that starts with A')
+      sortedByCategorie.sort((node_a, node_b) => {
+        const categorieA = node_a.querySelector('h3.todo-categorie')?.textContent;
+        const categorieB = node_b.querySelector('h3.todo-categorie')?.textContent;
+        
+        return categorieB.localeCompare(categorieA)
+      });
+    }
+    for (let i = 0; i < sortedByCategorie.length; i++) {
+     todoListDiv.append(sortedByCategorie[i]);
     }
   }
   
@@ -224,10 +289,22 @@ class TodoDOM {
       return;
     }
     
+    const sortedByDate = Array.from(todoListDiv.children);
     if (selectedOrderDate === 'first-last') {
-      console.log('recent items comes before old items');
+      sortedByDate.sort((node_a, node_b) => {
+        const dateA = node_a.querySelector('h3.todo-date')?.textContent;
+        const dateB = node_b.querySelector('h3.todo-date')?.textContent;
+        return new Date(dateA) - new Date(dateB);
+      });
     } else if (selectedOrderDate === 'last-first') {
-      console.log('old items comes before recent items');
+      sortedByDate.sort((node_a, node_b) => {
+        const dateA = node_a.querySelector('h3.todo-date')?.textContent;
+        const dateB = node_b.querySelector('h3.todo-date')?.textContent;
+        return new Date(dateB) - new Date(dateA);
+    });
+    }
+    for (let i = 0; i < sortedByDate.length; i++) {
+     todoListDiv.append(sortedByDate[i]);
     }
   }
   
