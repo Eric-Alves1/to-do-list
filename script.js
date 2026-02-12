@@ -311,14 +311,17 @@ class TodoDOM {
     }
   }
   
-  searchItem(value) {
-    const items = todoListDiv.children;
+  /**
+   * @param {string} value
+   * @type {todoItem[]} 
+   */
+  searchItem(value, items) {
     const formatedValue = value.toLowerCase().trim();
+    const childs = todoListDiv.children;
+    
     for (let i = 0; i < items.length; i++) {
-      const itemTitle = items[i].querySelector('h3.todo-title').textContent.toLowerCase().trim();
-      
-      if (itemTitle.slice(6) != formatedValue) {
-        items[i].style.setProperty('display', 'none');
+      if (items[i].value.toLowerCase().trim() != formatedValue) {
+        childs[i].style.setProperty('display', 'none');
       }
     }
   }
@@ -453,7 +456,11 @@ orderButton.addEventListener('click', () => {
 
 searchButton.addEventListener('click', () => {
   const searchValue = searchInput.value;
-  todoDOM.searchItem(searchValue);
+  const items = todoList.getItemArray();
+  if (searchValue.trim() === "") {
+    return;
+  }
+  todoDOM.searchItem(searchValue, items);
 });
 
 todoListDiv.addEventListener('click', (event) => {
