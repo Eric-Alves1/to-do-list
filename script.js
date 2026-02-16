@@ -165,31 +165,32 @@ class TodoDOM {
   /**
    * @param {string} selectedOrderTitle
    */
-  orderByItemTitle(selectedOrderTitle) {
+  orderByItemTitle(selectedOrderTitle, items) {
     if (selectedOrderTitle === 'noOrder') {
       return;
     }
-    
-    const sortedByTitle = Array.from(todoListDiv.children);
+  
+    const childs = Array.from(todoListDiv.children);
     if (selectedOrderTitle === 'a-z') {
-      sortedByTitle.sort((node_a, node_b) => {
-        const titleA = node_a.querySelector('h3.todo-title')?.textContent;
-        const titleB = node_b.querySelector('h3.todo-title')?.textContent;
+      childs.sort((value_a, value_b) => {
+        const titleA = value_a;
+        const titleB = value_b;
         
         return titleA.localeCompare(titleB);
       });
     } else if (selectedOrderTitle === 'z-a') {
-        sortedByTitle.sort((node_a, node_b) => {
-        const titleA = node_a.querySelector('h3.todo-title')?.textContent;
-        const titleB = node_b.querySelector('h3.todo-title')?.textContent;
+      childs.sort((value_a, value_b) => {
+        const titleA = value_a;
+        const titleB = value_b;
         
         return titleB.localeCompare(titleA);
       });
     }
-    
-    for (let i = 0; i < sortedByTitle.length; i++) {
-      todoListDiv.append(sortedByTitle[i]);
+    this.deleteAllNodes();
+    for (let i = 0; i < childs.length; i++) {
+      todoListDiv.append(childs[i]);
     }
+    
   }
   
   /**
@@ -250,6 +251,8 @@ class TodoDOM {
         return priorityWeightB - priorityWeightA;
       });
     }
+    
+    this.deleteAllNodes();
     for (let i = 0; i < sortedByPriority.length; i++) {
       todoListDiv.append(sortedByPriority[i]);
     }
@@ -279,6 +282,7 @@ class TodoDOM {
         return categorieB.localeCompare(categorieA)
       });
     }
+    this.deleteAllNodes();
     for (let i = 0; i < sortedByCategorie.length; i++) {
      todoListDiv.append(sortedByCategorie[i]);
     }
@@ -306,6 +310,7 @@ class TodoDOM {
         return new Date(dateB) - new Date(dateA);
     });
     }
+    this.deleteAllNodes();
     for (let i = 0; i < sortedByDate.length; i++) {
      todoListDiv.append(sortedByDate[i]);
     }
@@ -313,17 +318,20 @@ class TodoDOM {
   
   /**
    * @param {string} value
-   * @type {todoItem[]} 
    */
   searchItem(value, items) {
     const formatedValue = value.toLowerCase().trim();
-    const childs = todoListDiv.children;
+    const childs = Array.from(todoListDiv.children);
     
     for (let i = 0; i < items.length; i++) {
       if (items[i].value.toLowerCase().trim() != formatedValue) {
         childs[i].style.setProperty('display', 'none');
       }
     }
+  }
+  
+  deleteAllNodes() {
+    todoListDiv.replaceChildren();
   }
   
   /**
@@ -448,7 +456,9 @@ orderButton.addEventListener('click', () => {
   const selectedOrderCategorie = selectByItemCategorie.value;
   const selectedOrderDate = selectByItemDate.value;
   
-  todoDOM.orderByItemTitle(selectedOrderTitle);
+  const items = todoList.getItemArray();
+  
+  todoDOM.orderByItemTitle(selectedOrderTitle, items);
   todoDOM.orderByItemPriority(selectedOrderPriority);
   todoDOM.orderByItemCategorie(selectedOrderCategorie);
   todoDOM.orderByItemDate(selectedOrderDate);
