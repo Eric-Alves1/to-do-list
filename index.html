@@ -70,6 +70,31 @@
         </p>
       </div>
       
+      <div id="filter">
+        <p>Filter by:</p>
+        
+        <select id="filterPriority" class="select-filter">
+          <option value="noFilter" selected>Priority: (All)</option>
+          <option value="very-important">Priority: (Very-important)</option>
+          <option value="important">Priority: (Important)</option>
+          <option value="less-important">Priority: (Less-important)</option>
+        </select>
+        
+        <select id="filterCategorie" class="select-filter">
+          <option value="noFilter" selected>Categorie: (All)</option>
+          <option value="personal">Categorie: (Personal)</option>
+          <option value="work">Categorie: (Work)</option>
+          <option value="study">Categorie: (Study)</option>
+          <option value="health">Categorie: (Health)</option>
+          <option value="others">Categorie: (Others)</option>
+        </select>
+
+        <p>
+          <button id="filterButton" type="button">Confirm</button>
+          <button id="cancelFilterbutton" type="button">Remove filter</button>
+        </p>
+      </div>
+      
       <div id="searchDiv">
         <input type="text" id="searchInput" placeholder="Search a item...">
         <button type="button" id="searchButton">Search</button>

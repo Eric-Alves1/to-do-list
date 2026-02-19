@@ -68,10 +68,11 @@ body {
   max-width: 500px;
 }
 
-#order {
+#order, #filter {
   border: 1px solid black;
   padding: 5px;
   border-radius: 3px;
+  margin-bottom: 8px;
   background-color: #c3c3c3;
   max-width: 500px;
 }
@@ -83,7 +84,7 @@ body {
   border-radius: 3px;
 }
 
-.select-order {
+.select-order, .select-filter {
   width: 285px;
 }
 
