@@ -55,14 +55,14 @@
         
         <select id="orderCategorie" class="select-order">
           <option value="noOrder" selected>Categorie: (No order)</option>
-          <option value="a-z">Category (A -> Z)</option>
-          <option value="z-a">Category (Z -> A)</option>
+          <option value="a-z">Categorie: (A -> Z)</option>
+          <option value="z-a">Categorie: (Z -> A)</option>
         </select>
         
         <select id="orderDate" class="select-order">
           <option value="noOrder" selected>Date: (No order)</option>
-          <option value="first-last">Date (Newest -> Oldest)</option>
-          <option value="last-first">Date (Oldest -> Newest)</option>
+          <option value="first-last">Date: (Newest -> Oldest)</option>
+          <option value="last-first">Date: (Oldest -> Newest)</option>
         </select>
         
         <p>
@@ -75,9 +75,9 @@
         
         <select id="filterPriority" class="select-filter">
           <option value="noFilter" selected>Priority: (All)</option>
-          <option value="very-important">Priority: (Very-important)</option>
+          <option value="veryImportant">Priority: (Very-important)</option>
           <option value="important">Priority: (Important)</option>
-          <option value="less-important">Priority: (Less-important)</option>
+          <option value="lessImportant">Priority: (Less-important)</option>
         </select>
         
         <select id="filterCategorie" class="select-filter">
@@ -91,13 +91,13 @@
 
         <p>
           <button id="filterButton" type="button">Confirm</button>
-          <button id="cancelFilterbutton" type="button">Remove filter</button>
         </p>
       </div>
       
       <div id="searchDiv">
         <input type="text" id="searchInput" placeholder="Search a item...">
         <button type="button" id="searchButton">Search</button>
+        <button type="button" id="cancelSearch">×</button>
       </div>
       
       <p id="totalItems" class="count-paragraph">Total tasks: 0</p>

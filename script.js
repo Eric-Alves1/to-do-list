@@ -8,14 +8,19 @@ const completedItemsText = IsP(document.querySelector('#completedItems'));
 const selectPriorities = IsSelect(document.querySelector('#priority'));
 const selectCategories = IsSelect(document.querySelector('#categorie'));
 
-const selectByItemTitle = IsSelect(document.querySelector('#orderItem'));
-const selectByItemPriority = IsSelect(document.querySelector('#orderPriority'));
-const selectByItemCategorie = IsSelect(document.querySelector('#orderCategorie'));
-const selectByItemDate = IsSelect(document.querySelector('#orderDate'));
+const orderSelectByItemTitle = IsSelect(document.querySelector('#orderItem'));
+const orderSelectByItemPriority = IsSelect(document.querySelector('#orderPriority'));
+const orderSelectByItemCategorie = IsSelect(document.querySelector('#orderCategorie'));
+const orderSelectByItemDate = IsSelect(document.querySelector('#orderDate'));
 const orderButton = IsButton(document.querySelector('#orderButton'));
+
+const filterSelectByItemPriority = IsSelect(document.querySelector('#filterPriority'));
+const filterSelectByItemCategorie = IsSelect(document.querySelector('#filterCategorie'));
+const filterButton = IsButton(document.querySelector('#filterButton'));
 
 const searchInput = IsInput(document.querySelector('#searchInput'));
 const searchButton = IsButton(document.querySelector('#searchButton'));
+const cancelSearchButton = IsButton(document.querySelector('#cancelSearch'));
 
 const todoListDiv = IsDiv(document.querySelector('#todo-list'));
 
@@ -166,6 +171,7 @@ class TodoDOM {
    * @param {string} selectedOrderTitle
    */
   orderByItemTitle(selectedOrderTitle) {
+    
     if (selectedOrderTitle === 'noOrder') {
       return;
     }
@@ -369,13 +375,35 @@ class TodoDOM {
     const formatedValue = value.toLowerCase().trim();
     const childs = Array.from(todoListDiv.children);
     
-    for (let i = 0; i < items.length; i++) {
+    for (let i = 0; i < childs.length; i++) {
       const id = childs[i].getAttribute('id');
       const item = id ? todoList.getItemCopy(id) : undefined;
       
-      if (item.value.toLowerCase().trim() != formatedValue) {
-        childs[i].style.setProperty('display', 'none');
+      const match = item.value.toLowerCase().trim().includes(formatedValue);
+      childs[i].style.setProperty('display', match ? 'block' : 'none')
+    }
+  }
+  
+  filterItems(priorityValue, categorieValue) {
+    const childs = Array.from(todoListDiv.children);
+
+    for (let i = 0; i < childs.length; i++) {
+      const id = childs[i].getAttribute('id');
+      const item = id ? todoList.getItemCopy(id) : undefined;
+
+      childs[i].style.setProperty('display', 'block');
+      
+      let show = true;
+
+      if (priorityValue !== 'noFilter' && item.priority !== priorityValue) {
+        show = false;
       }
+      
+      if (categorieValue !== 'noFilter' && item.categorie !== categorieValue) {
+        show = false;
+      }
+      
+      childs[i].style.display = show ? 'block' : 'none';
     }
   }
   
@@ -443,6 +471,17 @@ class TodoDOM {
 const todoDOM = new TodoDOM();
 const todoList = new TodoList();
 
+function RenderItems() {
+  const childs = Array.from(todoListDiv.children);
+  if (!childs) {
+    return;
+  }
+  
+  for (let i = 0; i < childs.length; i++) {
+    childs[i].style.setProperty('display', 'block');
+  }
+}
+
 function ResetInput() {
   input.value = '';
   input.focus();
@@ -500,24 +539,27 @@ buttonAdd.addEventListener('click', () => {
 });
 
 orderButton.addEventListener('click', () => {
-  const selectedOrderTitle = selectByItemTitle.value;
-  const selectedOrderPriority = selectByItemPriority.value;
-  const selectedOrderCategorie = selectByItemCategorie.value;
-  const selectedOrderDate = selectByItemDate.value;
-  
-  todoDOM.orderByItemTitle(selectedOrderTitle);
-  todoDOM.orderByItemPriority(selectedOrderPriority);
-  todoDOM.orderByItemCategorie(selectedOrderCategorie);
-  todoDOM.orderByItemDate(selectedOrderDate);
+  todoDOM.orderByItemTitle(orderSelectByItemTitle.value);
+  todoDOM.orderByItemPriority(orderSelectByItemPriority.value);
+  todoDOM.orderByItemCategorie(orderSelectByItemCategorie.value);
+  todoDOM.orderByItemDate(orderSelectByItemDate.value);
 });
+
+filterButton.addEventListener('click', () => {
+  todoDOM.filterItems(filterSelectByItemPriority.value, filterSelectByItemCategorie.value);
+})
 
 searchButton.addEventListener('click', () => {
   const searchValue = searchInput.value;
-  const items = todoList.getItemArray();
   if (searchValue.trim() === "") {
     return;
   }
-  todoDOM.searchItem(searchValue, items);
+  todoDOM.searchItem(searchValue);
+});
+
+cancelSearchButton.addEventListener('click', () => {
+  RenderItems();
+  searchInput.value = '';
 });
 
 todoListDiv.addEventListener('click', (event) => {
