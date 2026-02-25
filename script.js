@@ -308,7 +308,7 @@ class TodoDOM {
    */
   searchItem(value, items) {
     const formatedValue = value.toLowerCase().trim();
-    const childs = Array.from(todoListDiv.children);
+    const childs = this.getChilds(todoListDiv);
     
     for (let i = 0; i < childs.length; i++) {
       const id = childs[i].getAttribute('id');
@@ -320,7 +320,7 @@ class TodoDOM {
   }
   
   filterItems(priorityValue, categorieValue) {
-    const childs = Array.from(todoListDiv.children);
+    const childs = this.getChilds(todoListDiv);
 
     for (let i = 0; i < childs.length; i++) {
       const id = childs[i].getAttribute('id');
