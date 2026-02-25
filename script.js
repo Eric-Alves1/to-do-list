@@ -19,8 +19,6 @@ const filterSelectByItemCategorie = IsSelect(document.querySelector('#filterCate
 const filterButton = IsButton(document.querySelector('#filterButton'));
 
 const searchInput = IsInput(document.querySelector('#searchInput'));
-const searchButton = IsButton(document.querySelector('#searchButton'));
-const cancelSearchButton = IsButton(document.querySelector('#cancelSearch'));
 
 const todoListDiv = IsDiv(document.querySelector('#todo-list'));
 
@@ -171,19 +169,15 @@ class TodoDOM {
    * @param {string} selectedOrderTitle
    */
   orderByItemTitle(selectedOrderTitle) {
-    
+    const childs = this.getChilds(todoListDiv);
     if (selectedOrderTitle === 'noOrder') {
       return;
     }
   
-    const childs = Array.from(todoListDiv.children);
     if (selectedOrderTitle === 'a-z') {
       childs.sort((node_a, node_b) => {
-        const idA = node_a.getAttribute('id');
-        const itemA = idA ? todoList.getItemCopy(idA) : undefined;
-        
-        const idB = node_b.getAttribute('id')
-        const itemB = idB ? todoList.getItemCopy(idB) : undefined;
+        const { itemA } = this.getItem(node_a, node_b);
+        const { itemB } = this.getItem(node_a, node_b);
         
         const titleA = itemA.value;
         const titleB = itemB.value;
@@ -192,11 +186,8 @@ class TodoDOM {
       });
     } else if (selectedOrderTitle === 'z-a') {
       childs.sort((node_a, node_b) => {
-        const idA = node_a.getAttribute('id');
-        const itemA = idA ? todoList.getItemCopy(idA) : undefined;
-        
-        const idB = node_b.getAttribute('id')
-        const itemB = idB ? todoList.getItemCopy(idB) : undefined;
+        const { itemA } = this.getItem(node_a, node_b);
+        const { itemB } = this.getItem(node_a, node_b);
         
         const titleA = itemA.value;
         const titleB = itemB.value;
@@ -204,105 +195,61 @@ class TodoDOM {
         return titleB.localeCompare(titleA);
       });
     }
-    this.deleteAllNodes();
-    for (let i = 0; i < childs.length; i++) {
-      todoListDiv.append(childs[i]);
-    }
+    addOrderedItems(childs);
   }
   
   /**
    * @param {string} selectedOrderPriority
    */
   orderByItemPriority(selectedOrderPriority) {
+    const childs = this.getChilds(todoListDiv);
     if (selectedOrderPriority === 'noOrder') {
       return;
     }
     
-    const childs = Array.from(todoListDiv.children);
     if (selectedOrderPriority === 'm-l') {
       childs.sort((node_a, node_b) => {
-        const idA = node_a.getAttribute('id');
-        const itemA = idA ? todoList.getItemCopy(idA) : undefined;
+        const { itemA } = this.getItem(node_a, node_b);
+        const { itemB } = this.getItem(node_a, node_b);
         
-        const idB = node_b.getAttribute('id')
-        const itemB = idB ? todoList.getItemCopy(idB) : undefined;
-        
-        let priorityWeightA;
-        let priorityWeightB;
         const priorityA = itemA.priority;
         const priorityB = itemB.priority;
         
-        if (priorityA === 'veryImportant') {
-          priorityWeightA = 1;
-        } else if (priorityA === 'important') {
-          priorityWeightA = 2;
-        } else if (priorityA === 'lessImportant') {
-          priorityWeightA = 3;
-        }
+        const { priorityWeightA } = this.getPriorityWeight(priorityA, priorityB);
+        const { priorityWeightB } = this.getPriorityWeight(priorityA, priorityB);
         
-        if (priorityB === 'veryImportant') {
-          priorityWeightB = 1;
-        } else if (priorityB === 'important') {
-          priorityWeightB = 2;
-        } else if (priorityB === 'lessImportant') {
-          priorityWeightB = 3;
-        }        
         return priorityWeightA - priorityWeightB;
       });
     } else if (selectedOrderPriority === 'l-m') {
       childs.sort((node_a, node_b) => {
-        const idA = node_a.getAttribute('id');
-        const itemA = idA ? todoList.getItemCopy(idA) : undefined;
+        const { itemA } = this.getItem(node_a, node_b);
+        const { itemB } = this.getItem(node_a, node_b);
         
-        const idB = node_b.getAttribute('id')
-        const itemB = idB ? todoList.getItemCopy(idB) : undefined;
-        
-        let priorityWeightA;
-        let priorityWeightB;
         const priorityA = itemA.priority;
         const priorityB = itemB.priority;
         
-        if (priorityA === 'veryImportant') {
-          priorityWeightA = 1;
-        } else if (priorityA === 'important') {
-          priorityWeightA = 2;
-        } else if (priorityA === 'lessImportant') {
-          priorityWeightA = 3;
-        }
-        
-        if (priorityB === 'veryImportant') {
-          priorityWeightB = 1;
-        } else if (priorityB === 'important') {
-          priorityWeightB = 2;
-        } else if (priorityB === 'lessImportant') {
-          priorityWeightB = 3;
-        }
+        const { priorityWeightA } = this.getPriorityWeight(priorityA, priorityB);
+        const { priorityWeightB } = this.getPriorityWeight(priorityA, priorityB);
         
         return priorityWeightB - priorityWeightA;
       });
     }
-    
-    this.deleteAllNodes();
-    for (let i = 0; i < childs.length; i++) {
-      todoListDiv.append(childs[i]);
-    }
+    addOrderedItems(childs);
   }
   
   /**
    * @param {string} selectedOrderCategorie
    */
   orderByItemCategorie(selectedOrderCategorie) {
+    const childs = this.getChilds(todoListDiv);
     if (selectedOrderCategorie === 'noOrder') {
       return;
     }
     
-    const childs = Array.from(todoListDiv.children);
     if (selectedOrderCategorie === 'a-z') {
       childs.sort((node_a, node_b) => {
-        const idA = node_a.getAttribute('id');
-        const itemA = idA ? todoList.getItemCopy(idA) : undefined;
-        const idB = node_b.getAttribute('id')
-        const itemB = idB ? todoList.getItemCopy(idB) : undefined;
+        const { itemA } = this.getItem(node_a, node_b);
+        const { itemB } = this.getItem(node_a, node_b);
         
         const categorieA = itemA.categorie;
         const categorieB = itemB.categorie;
@@ -311,10 +258,8 @@ class TodoDOM {
       });
     } else if (selectedOrderCategorie === 'z-a') {
       childs.sort((node_a, node_b) => {
-        const idA = node_a.getAttribute('id');
-        const itemA = idA ? todoList.getItemCopy(idA) : undefined;
-        const idB = node_b.getAttribute('id')
-        const itemB = idB ? todoList.getItemCopy(idB) : undefined;
+        const { itemA } = this.getItem(node_a, node_b);
+        const { itemB } = this.getItem(node_a, node_b);
         
         const categorieA = itemA.categorie;
         const categorieB = itemB.categorie;
@@ -322,27 +267,22 @@ class TodoDOM {
         return categorieB.localeCompare(categorieA)
       });
     }
-    this.deleteAllNodes();
-    for (let i = 0; i < childs.length; i++) {
-     todoListDiv.append(childs[i]);
-    }
+    addOrderedItems(childs);
   }
   
   /**
    * @param {string} selectedOrderDate
    */
   orderByItemDate(selectedOrderDate) {
+    const childs = this.getChilds(todoListDiv);
     if (selectedOrderDate === 'noOrder') {
       return;
     }
     
-    const childs = Array.from(todoListDiv.children);
     if (selectedOrderDate === 'first-last') {
       childs.sort((node_a, node_b) => {
-        const idA = node_a.getAttribute('id');
-        const itemA = idA ? todoList.getItemCopy(idA) : undefined;
-        const idB = node_b.getAttribute('id')
-        const itemB = idB ? todoList.getItemCopy(idB) : undefined;
+        const { itemA } = this.getItem(node_a, node_b);
+        const { itemB } = this.getItem(node_a, node_b);
         
         const dateA = itemA.date;
         const dateB = itemB.date;
@@ -351,21 +291,16 @@ class TodoDOM {
       });
     } else if (selectedOrderDate === 'last-first') {
       childs.sort((node_a, node_b) => {
-        const idA = node_a.getAttribute('id');
-        const itemA = idA ? todoList.getItemCopy(idA) : undefined;
-        const idB = node_b.getAttribute('id')
-        const itemB = idB ? todoList.getItemCopy(idB) : undefined;
+        const { itemA } = this.getItem(node_a, node_b);
+        const { itemB } = this.getItem(node_a, node_b);
         
         const dateA = itemA.date;
         const dateB = itemB.date;
         
         return new Date(dateB) - new Date(dateA);
-    });
+      });
     }
-    this.deleteAllNodes();
-    for (let i = 0; i < childs.length; i++) {
-     todoListDiv.append(childs[i]);
-    }
+    addOrderedItems(childs);
   }
   
   /**
@@ -466,10 +401,54 @@ class TodoDOM {
     const day = date.getDate().toString(10).padStart(2, '0');
     return `Date: ${year}/${month}/${day}`;
   }
+  
+  getChilds(div) {
+    return Array.from(div.children)
+  }
+  
+  getItem(node_a, node_b) {
+    const idA = node_a.getAttribute('id');
+    const itemA = idA ? todoList.getItemCopy(idA) : undefined;
+        
+    const idB = node_b.getAttribute('id')
+    const itemB = idB ? todoList.getItemCopy(idB) : undefined;
+    
+    return { itemA, itemB };
+  }
+  
+  getPriorityWeight(priorityA, priorityB) {
+    let priorityWeightA;
+    let priorityWeightB;
+    
+    if (priorityA === 'veryImportant') {
+        priorityWeightA = 1;
+       } else if (priorityA === 'important') {
+        priorityWeightA = 2;
+      } else if (priorityA === 'lessImportant') {
+        priorityWeightA = 3;
+      }
+        
+    if (priorityB === 'veryImportant') {
+        priorityWeightB = 1;
+      } else if (priorityB === 'important') {
+        priorityWeightB = 2;
+      } else if (priorityB === 'lessImportant') {
+        priorityWeightB = 3;
+      } 
+    
+    return { priorityWeightA, priorityWeightB };
+  }
 }
 
 const todoDOM = new TodoDOM();
 const todoList = new TodoList();
+
+function addOrderedItems(childs) {
+  todoDOM.deleteAllNodes();
+    for (let i = 0; i < childs.length; i++) {
+      todoListDiv.append(childs[i]);
+    }
+}
 
 function RenderItems() {
   const childs = Array.from(todoListDiv.children);
@@ -547,20 +526,17 @@ orderButton.addEventListener('click', () => {
 
 filterButton.addEventListener('click', () => {
   todoDOM.filterItems(filterSelectByItemPriority.value, filterSelectByItemCategorie.value);
-})
+});
 
-searchButton.addEventListener('click', () => {
+searchInput.addEventListener('input', () => {
   const searchValue = searchInput.value;
-  if (searchValue.trim() === "") {
+  if (searchValue.trim() === '') {
+    RenderItems();
     return;
   }
   todoDOM.searchItem(searchValue);
 });
 
-cancelSearchButton.addEventListener('click', () => {
-  RenderItems();
-  searchInput.value = '';
-});
 
 todoListDiv.addEventListener('click', (event) => {
   const button = IsButton(event.target);

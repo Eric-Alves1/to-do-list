@@ -1,16 +1,10 @@
 let id = 0;
 
-/**
- * Returns an id that is unique during the lifetime of the program. It's very
- * simple, but it works for what we need. We increment a number and convert it
- * to string.
- */
 function GetUniqueId() {
   return (id++).toString(10);
 }
 
 /**
- * Throws an error if the argument is null or undefined.
  * @param {any} arg
  */
 function AssertNotNullOrUndefined(arg) {
