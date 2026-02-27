@@ -68,7 +68,8 @@ body {
   max-width: 500px;
 }
 
-#order, #filter {
+#order,
+#filter {
   border: 1px solid black;
   padding: 5px;
   border-radius: 3px;
@@ -84,7 +85,8 @@ body {
   border-radius: 3px;
 }
 
-.select-order, .select-filter {
+.select-order,
+.select-filter {
   width: 285px;
 }
 
@@ -109,13 +111,15 @@ body {
   margin: 0 5px 0 5px;
 }
 
-input, select {
-  background-color: #FFFFFF;
+input,
+select {
+  background-color: #ffffff;
   border: 1px solid black;
 }
 
-input:focus, select:focus {
-  border-color: #2563EB;
+input:focus,
+select:focus {
+  border-color: #2563eb;
   outline: none;
 }
 

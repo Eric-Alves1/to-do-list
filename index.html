@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link rel="stylesheet" href="./style.css" />
   <script src="./utility.js" defer></script>
   <script src="./TodoItem.js" defer></script>
   <script src="./TodoList.js" defer></script>
@@ -18,7 +18,7 @@
     <div id="todo-container">
       <h1>To-do list</h1>
       <div id="header">
-        <input type="text" id="input" placeholder="add a new task">
+        <input type="text" id="input" placeholder="add a new task" />
         <button id="new-task" type="button">+</button>
       </div>
       <div id="custom">
@@ -37,49 +37,49 @@
           <option value="others" selected>Others</option>
         </select>
       </div>
-      
+
       <div id="order">
         <p>Order by:</p>
-        
+
         <select id="orderItem" class="select-order">
           <option value="noOrder" selected>Title: (No order)</option>
-          <option value="a-z">Title: (A -> Z)</option>
-          <option value="z-a">Title: (Z -> A)</option>
+          <option value="ascending">Title: (A -> Z)</option>
+          <option value="descending">Title: (Z -> A)</option>
         </select>
-        
+
         <select id="orderPriority" class="select-order">
-        <option value="noOrder" selected>Priority: (No order)</option>
-          <option value="m-l">Priority: (Most important -> Least Important)</option>
-          <option value="l-m">Priority: (Least important -> Most important)</option>
+          <option value="noOrder" selected>Priority: (No order)</option>
+          <option value="ascending">Priority: (Most important -> Least Important)</option>
+          <option value="descending">Priority: (Least important -> Most important)</option>
         </select>
-        
+
         <select id="orderCategorie" class="select-order">
           <option value="noOrder" selected>Categorie: (No order)</option>
-          <option value="a-z">Categorie: (A -> Z)</option>
-          <option value="z-a">Categorie: (Z -> A)</option>
+          <option value="ascending">Categorie: (A -> Z)</option>
+          <option value="descending">Categorie: (Z -> A)</option>
         </select>
-        
+
         <select id="orderDate" class="select-order">
           <option value="noOrder" selected>Date: (No order)</option>
-          <option value="first-last">Date: (Newest -> Oldest)</option>
-          <option value="last-first">Date: (Oldest -> Newest)</option>
+          <option value="ascending">Date: (Newest -> Oldest)</option>
+          <option value="descending">Date: (Oldest -> Newest)</option>
         </select>
-        
+
         <p>
           <button id="orderButton" type="button">Confirm</button>
         </p>
       </div>
-      
+
       <div id="filter">
         <p>Filter by:</p>
-        
+
         <select id="filterPriority" class="select-filter">
           <option value="noFilter" selected>Priority: (All)</option>
           <option value="veryImportant">Priority: (Very-important)</option>
           <option value="important">Priority: (Important)</option>
           <option value="lessImportant">Priority: (Less-important)</option>
         </select>
-        
+
         <select id="filterCategorie" class="select-filter">
           <option value="noFilter" selected>Categorie: (All)</option>
           <option value="personal">Categorie: (Personal)</option>
@@ -93,17 +93,16 @@
           <button id="filterButton" type="button">Confirm</button>
         </p>
       </div>
-      
+
       <div id="searchDiv">
-        <input type="text" id="searchInput" placeholder="Search a item...">
+        <input type="text" id="searchInput" placeholder="Search a item..." />
       </div>
-      
+
       <p id="totalItems" class="count-paragraph">Total tasks: 0</p>
       <p id="pendingItems" class="count-paragraph">Pending tasks: 0</p>
       <p id="completedItems" class="count-paragraph">Completed tasks: 0</p>
-      
-      <div id="todo-list">
-      </div>
+
+      <div id="todo-list"></div>
     </div>
   </div>
 </body>
